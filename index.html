@@ -1,0 +1,2098 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f7f8fb" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Health Weight Pro">
+    <title>Health Weight Pro 2.0</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./assets/icons/icon-180.png">
+    <link rel="icon" href="./assets/icons/icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./css/styles.css">
+    <style id="github-pages-fallback-css">
+:root {
+  color-scheme: light dark;
+  --bg: #f7f8fb;
+  --surface: rgba(255, 255, 255, 0.78);
+  --surface-solid: #ffffff;
+  --text: #17181c;
+  --muted: #68707d;
+  --line: rgba(20, 24, 32, 0.11);
+  --accent: #ff375f;
+  --blue: #3478f6;
+  --green: #28c76f;
+  --yellow: #f5b642;
+  --red: #ef4444;
+  --orange: #ff8a3d;
+  --shadow: 0 14px 36px rgba(24, 28, 40, 0.12);
+  --radius: 8px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101216;
+    --surface: rgba(28, 31, 37, 0.78);
+    --surface-solid: #1b1e24;
+    --text: #f5f7fb;
+    --muted: #a2a9b5;
+    --line: rgba(235, 239, 247, 0.13);
+    --shadow: 0 18px 42px rgba(0, 0, 0, 0.35);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--bg);
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(255, 55, 95, 0.12), transparent 34rem),
+    radial-gradient(circle at 85% 6%, rgba(52, 120, 246, 0.10), transparent 26rem),
+    var(--bg);
+  color: var(--text);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+.file-button {
+  min-height: 44px;
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.file-button:focus-within {
+  outline: 3px solid color-mix(in srgb, var(--blue) 34%, transparent);
+  outline-offset: 2px;
+}
+
+.app-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: max(18px, env(safe-area-inset-top)) 18px calc(86px + var(--safe-bottom));
+}
+
+.topbar,
+.section-heading,
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.topbar {
+  padding: 12px 2px 18px;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  font-size: clamp(2rem, 7vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.45rem, 4vw, 2rem);
+  letter-spacing: 0;
+}
+
+h3 {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.header-actions,
+.form-actions,
+.backup-grid,
+.photo-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.icon-button {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.tabbar {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 0 16px;
+  background: linear-gradient(to bottom, var(--bg) 70%, transparent);
+  scrollbar-width: none;
+}
+
+.tabbar::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-button {
+  padding: 0 16px;
+  background: var(--surface);
+  color: var(--muted);
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.tab-button.is-active {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.view {
+  display: none;
+}
+
+.view.is-active {
+  display: block;
+}
+
+.section-heading {
+  margin: 10px 0 18px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 12px;
+}
+
+.metric-card,
+.alert-card,
+.history-panel,
+.chart-panel,
+.form-grid,
+.backup-grid,
+.photo-card,
+dialog {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.metric-card {
+  grid-column: span 4;
+  min-height: 142px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.metric-card.wide {
+  grid-column: span 6;
+}
+
+.metric-label {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.metric-value {
+  margin: 10px 0 4px;
+  font-size: clamp(1.75rem, 5vw, 2.7rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.metric-sub {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.progress-track {
+  height: 9px;
+  margin-top: 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--muted) 16%, transparent);
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--orange), var(--green));
+}
+
+.score-pill {
+  min-width: 70px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--red);
+  color: white;
+  font-weight: 800;
+  text-align: center;
+}
+
+.score-pill.medium {
+  background: var(--yellow);
+  color: #17181c;
+}
+
+.score-pill.high {
+  background: var(--green);
+}
+
+.alert-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.alert-card {
+  padding: 14px 16px;
+  border-left: 5px solid var(--orange);
+}
+
+.alert-card strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 16px;
+}
+
+label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface-solid) 88%, transparent);
+  color: var(--text);
+  min-height: 44px;
+  padding: 11px 12px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+  accent-color: var(--green);
+}
+
+input[type="file"] {
+  padding: 9px;
+}
+
+input[type="range"] {
+  padding-inline: 0;
+}
+
+output {
+  width: 38px;
+  min-height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--blue) 16%, transparent);
+  color: var(--text);
+}
+
+.span-2 {
+  grid-column: 1 / -1;
+}
+
+.checklist {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.checklist legend {
+  padding: 0 6px;
+  color: var(--text);
+  font-weight: 800;
+}
+
+.checklist label {
+  grid-template-columns: 22px 1fr;
+  align-items: center;
+  color: var(--text);
+  font-weight: 650;
+}
+
+.primary-button,
+.secondary-button,
+.danger-button,
+.file-button {
+  display: inline-grid;
+  place-items: center;
+  padding: 0 16px;
+  font-weight: 800;
+}
+
+.primary-button {
+  background: var(--accent);
+  color: white;
+}
+
+.secondary-button,
+.file-button {
+  background: var(--surface-solid);
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+
+.danger-button {
+  background: color-mix(in srgb, var(--red) 16%, transparent);
+  color: var(--red);
+}
+
+.file-button input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.history-panel,
+.chart-panel {
+  margin-top: 14px;
+  padding: 16px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 11px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+canvas {
+  width: 100%;
+  height: 280px;
+  display: block;
+}
+
+.backup-grid {
+  align-items: stretch;
+  padding: 16px;
+}
+
+.small-note {
+  color: var(--muted);
+  margin: 12px 2px 0;
+}
+
+.photo-toolbar {
+  margin: 8px 0 14px;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.photo-card {
+  padding: 10px;
+}
+
+.photo-card img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--surface-solid);
+}
+
+.photo-card footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 8px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+dialog {
+  width: min(620px, calc(100% - 28px));
+  padding: 0;
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(10px);
+}
+
+dialog form {
+  padding: 18px;
+}
+
+.macro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.macro-grid div {
+  padding: 14px;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface-solid) 70%, transparent);
+}
+
+.macro-grid strong {
+  display: block;
+  font-size: 1.35rem;
+}
+
+.macro-grid span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.menu-list {
+  display: grid;
+  gap: 10px;
+}
+
+.menu-list section {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.menu-list p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + var(--safe-bottom));
+  z-index: 10;
+  transform: translate(-50%, 140%);
+  max-width: min(440px, calc(100% - 28px));
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  background: var(--text);
+  color: var(--bg);
+  box-shadow: var(--shadow);
+  transition: transform 0.22s ease;
+}
+
+.toast.is-visible {
+  transform: translate(-50%, 0);
+}
+
+.empty-state {
+  padding: 24px 14px;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .metrics-grid,
+  .chart-grid,
+  .photo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card,
+  .metric-card.wide {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    padding-inline: 12px;
+  }
+
+  .topbar {
+    align-items: flex-end;
+  }
+
+  .form-grid,
+  .checklist {
+    grid-template-columns: 1fr;
+  }
+
+  .span-2 {
+    grid-column: auto;
+  }
+
+  .backup-grid,
+  .form-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .danger-button,
+  .file-button {
+    width: 100%;
+  }
+
+  .macro-grid {
+    grid-template-columns: 1fr;
+  }
+
+  canvas {
+    height: 240px;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+    color: #111;
+  }
+
+  .topbar,
+  .tabbar,
+  .form-actions,
+  .toast,
+  .icon-button,
+  .backup-grid {
+    display: none !important;
+  }
+
+  .view {
+    display: block !important;
+    break-after: page;
+  }
+
+  .metric-card,
+  .history-panel,
+  .chart-panel {
+    box-shadow: none;
+    background: white;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Health Weight Pro 2.0</p>
+          <h1>Acompanhamento</h1>
+        </div>
+        <div class="header-actions">
+          <button class="icon-button" id="installButton" type="button" aria-label="Instalar aplicativo" hidden>+</button>
+          <button class="icon-button" id="nutritionButton" type="button" aria-label="Plano nutricional">🍽</button>
+        </div>
+      </header>
+
+      <main>
+        <nav class="tabbar" aria-label="Seções">
+          <button class="tab-button is-active" data-view="dashboard" type="button">Resumo</button>
+          <button class="tab-button" data-view="checkin" type="button">Check-in</button>
+          <button class="tab-button" data-view="tirzepatide" type="button">Tirzepatida</button>
+          <button class="tab-button" data-view="charts" type="button">Gráficos</button>
+          <button class="tab-button" data-view="photos" type="button">Fotos</button>
+          <button class="tab-button" data-view="backup" type="button">Backup</button>
+        </nav>
+
+        <section class="view is-active" id="dashboard" aria-labelledby="dashboardTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Hoje</p>
+              <h2 id="dashboardTitle">Painel principal</h2>
+            </div>
+            <div class="score-pill" id="scorePill">0%</div>
+          </div>
+
+          <div class="metrics-grid" id="metricsGrid"></div>
+          <section class="alert-list" id="alertList" aria-live="polite"></section>
+        </section>
+
+        <section class="view" id="checkin" aria-labelledby="checkinTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Registro diário</p>
+              <h2 id="checkinTitle">Check-in</h2>
+            </div>
+            <button class="secondary-button" id="fillTodayButton" type="button">Usar hoje</button>
+          </div>
+
+          <form class="form-grid" id="dailyForm">
+            <label>Data
+              <input name="date" type="date" required>
+            </label>
+            <label>Peso (kg)
+              <input name="weight" type="number" inputmode="decimal" step="0.1" min="30" max="250" required>
+            </label>
+            <label>Cintura (cm)
+              <input name="waist" type="number" inputmode="decimal" step="0.1" min="40" max="200">
+            </label>
+            <label>Proteína (g)
+              <input name="protein" type="number" inputmode="numeric" step="1" min="0" max="400">
+            </label>
+            <label>Calorias (kcal)
+              <input name="calories" type="number" inputmode="numeric" step="1" min="0" max="6000">
+            </label>
+            <label>Passos
+              <input name="steps" type="number" inputmode="numeric" step="1" min="0" max="80000">
+            </label>
+            <label>Água (L)
+              <input name="water" type="number" inputmode="decimal" step="0.1" min="0" max="12">
+            </label>
+            <label>Sono (horas)
+              <input name="sleep" type="number" inputmode="decimal" step="0.1" min="0" max="18">
+            </label>
+            <label class="span-2">Observações
+              <textarea name="notes" rows="3" placeholder="Fome, treino, libido, cabelo, energia..."></textarea>
+            </label>
+
+            <fieldset class="checklist span-2">
+              <legend>Metas do dia</legend>
+              <label><input name="waterDone" type="checkbox"> Água 3-4 L</label>
+              <label><input name="proteinDone" type="checkbox"> Proteína 170 g</label>
+              <label><input name="caloriesDone" type="checkbox"> Calorias até 1900 kcal</label>
+              <label><input name="strengthDone" type="checkbox"> Musculação</label>
+              <label><input name="cardioDone" type="checkbox"> Cardio</label>
+              <label><input name="sleepDone" type="checkbox"> Sono 7h30+</label>
+              <label><input name="stepsDone" type="checkbox"> Passos 8000+</label>
+              <label><input name="applicationDone" type="checkbox"> Aplicação realizada</label>
+            </fieldset>
+
+            <div class="form-actions span-2">
+              <button class="primary-button" type="submit">Salvar check-in</button>
+              <button class="danger-button" id="deleteEntryButton" type="button">Excluir data</button>
+            </div>
+          </form>
+
+          <section class="history-panel">
+            <h3>Histórico recente</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Peso</th>
+                    <th>Cintura</th>
+                    <th>Aderência</th>
+                  </tr>
+                </thead>
+                <tbody id="dailyHistory"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="tirzepatide" aria-labelledby="tirzepatideTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Controle</p>
+              <h2 id="tirzepatideTitle">Tirzepatida</h2>
+            </div>
+          </div>
+
+          <form class="form-grid" id="tirzepatideForm">
+            <label>Data
+              <input name="date" type="date" required>
+            </label>
+            <label>Dose
+              <select name="dose" required>
+                <option value="2.5">2,5 mg</option>
+                <option value="5">5 mg</option>
+                <option value="7.5">7,5 mg</option>
+                <option value="10">10 mg</option>
+                <option value="12.5">12,5 mg</option>
+                <option value="15">15 mg</option>
+              </select>
+            </label>
+            <label>Peso (kg)
+              <input name="weight" type="number" inputmode="decimal" step="0.1" min="30" max="250">
+            </label>
+            <label>Escala 0 a 5
+              <input name="severity" type="range" min="0" max="5" step="1" value="0">
+              <output id="severityOutput">0</output>
+            </label>
+
+            <fieldset class="checklist span-2">
+              <legend>Efeitos colaterais</legend>
+              <label><input name="sideEffects" type="checkbox" value="Náusea"> Náusea</label>
+              <label><input name="sideEffects" type="checkbox" value="Constipação"> Constipação</label>
+              <label><input name="sideEffects" type="checkbox" value="Refluxo"> Refluxo</label>
+              <label><input name="sideEffects" type="checkbox" value="Dor abdominal"> Dor abdominal</label>
+              <label><input name="sideEffects" type="checkbox" value="Dor de cabeça"> Dor de cabeça</label>
+              <label><input name="sideEffects" type="checkbox" value="Fadiga"> Fadiga</label>
+              <label><input name="sideEffects" type="checkbox" value="Tontura"> Tontura</label>
+              <label><input name="sideEffects" type="checkbox" value="Outros"> Outros</label>
+            </fieldset>
+
+            <label class="span-2">Observações
+              <textarea name="notes" rows="3" placeholder="Local da aplicação, sintomas, apetite, energia..."></textarea>
+            </label>
+
+            <div class="form-actions span-2">
+              <button class="primary-button" type="submit">Salvar aplicação</button>
+            </div>
+          </form>
+
+          <section class="history-panel">
+            <h3>Aplicações registradas</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Dose</th>
+                    <th>Peso</th>
+                    <th>Efeitos</th>
+                    <th>Escala</th>
+                  </tr>
+                </thead>
+                <tbody id="tirzepatideHistory"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="charts" aria-labelledby="chartsTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Tendências</p>
+              <h2 id="chartsTitle">Gráficos</h2>
+            </div>
+          </div>
+          <div class="chart-grid">
+            <section class="chart-panel"><h3>Peso real vs esperado</h3><canvas id="weightChart"></canvas></section>
+            <section class="chart-panel"><h3>Circunferência abdominal</h3><canvas id="waistChart"></canvas></section>
+            <section class="chart-panel"><h3>Aderência semanal</h3><canvas id="adherenceChart"></canvas></section>
+            <section class="chart-panel"><h3>Proteína média diária</h3><canvas id="proteinChart"></canvas></section>
+            <section class="chart-panel"><h3>Calorias médias</h3><canvas id="caloriesChart"></canvas></section>
+            <section class="chart-panel"><h3>IMC</h3><canvas id="bmiChart"></canvas></section>
+          </div>
+        </section>
+
+        <section class="view" id="photos" aria-labelledby="photosTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Evolução</p>
+              <h2 id="photosTitle">Fotos</h2>
+            </div>
+          </div>
+
+          <form class="form-grid" id="photoForm">
+            <label>Data
+              <input name="date" type="date" required>
+            </label>
+            <label>Categoria
+              <select name="category" required>
+                <option>Frente</option>
+                <option>Lado</option>
+                <option>Costas</option>
+              </select>
+            </label>
+            <label class="span-2">Foto local
+              <input name="photo" type="file" accept="image/*" required>
+            </label>
+            <div class="form-actions span-2">
+              <button class="primary-button" type="submit">Salvar foto</button>
+            </div>
+          </form>
+
+          <div class="photo-toolbar">
+            <label>Comparação
+              <select id="photoCompareCategory">
+                <option>Frente</option>
+                <option>Lado</option>
+                <option>Costas</option>
+              </select>
+            </label>
+          </div>
+          <div class="photo-grid" id="photoGrid"></div>
+        </section>
+
+        <section class="view" id="backup" aria-labelledby="backupTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Dados locais</p>
+              <h2 id="backupTitle">Backup e exportação</h2>
+            </div>
+          </div>
+
+          <div class="backup-grid">
+            <button class="primary-button" id="exportJsonButton" type="button">Exportar JSON</button>
+            <label class="file-button">Importar JSON
+              <input id="importJsonInput" type="file" accept="application/json,.json">
+            </label>
+            <button class="secondary-button" id="exportExcelButton" type="button">Exportar Excel</button>
+            <button class="secondary-button" id="exportPdfButton" type="button">Exportar PDF</button>
+          </div>
+          <p class="small-note">Os dados ficam neste dispositivo. Fotos e registros entram no backup JSON.</p>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="nutritionModal">
+      <form method="dialog">
+        <header class="modal-header">
+          <div>
+            <p class="eyebrow">Plano nutricional</p>
+            <h2>1900 kcal</h2>
+          </div>
+          <button class="icon-button" value="close" aria-label="Fechar" type="submit">×</button>
+        </header>
+        <div class="macro-grid">
+          <div><strong>170 g</strong><span>Proteína</span></div>
+          <div><strong>150 g</strong><span>Carboidratos</span></div>
+          <div><strong>65 g</strong><span>Gorduras</span></div>
+        </div>
+        <div class="menu-list">
+          <section><h3>Café</h3><p>3 ovos, 1 fruta e café.</p></section>
+          <section><h3>Almoço</h3><p>180 g de proteína, arroz, feijão e salada.</p></section>
+          <section><h3>Lanche</h3><p>Whey ou iogurte.</p></section>
+          <section><h3>Jantar</h3><p>Proteína, legumes e salada.</p></section>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script id="github-pages-fallback-js">console.log('Health Weight Pro inline JS carregado');</script>
+    <script data-inline-source="js/storage.js">
+(function () {
+  "use strict";
+
+  const KEY = "healthWeightPro2.state";
+  const PROFILE = {
+    initialWeight: 89,
+    targetWeight: 70,
+    height: 1.72,
+    dailyProtein: 170,
+    dailyCalories: 1900,
+    dailyWaterMin: 3,
+    dailyWaterMax: 4,
+    dailySteps: 8000,
+    dailySleep: 7.5
+  };
+
+  const emptyState = () => ({
+    version: 1,
+    profile: { ...PROFILE },
+    entries: [],
+    injections: [],
+    photos: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  });
+
+  const normalizeDate = (value) => {
+    if (!value) return new Date().toISOString().slice(0, 10);
+    return String(value).slice(0, 10);
+  };
+
+  const toNumber = (value, fallback = 0) => {
+    const parsed = Number(String(value ?? "").replace(",", "."));
+    return Number.isFinite(parsed) ? parsed : fallback;
+  };
+
+  const byDateAsc = (a, b) => a.date.localeCompare(b.date);
+  const byDateDesc = (a, b) => b.date.localeCompare(a.date);
+  const newId = () => {
+    if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+    return `hwp-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  };
+
+  const read = () => {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return emptyState();
+      const parsed = JSON.parse(raw);
+      return {
+        ...emptyState(),
+        ...parsed,
+        profile: { ...PROFILE, ...(parsed.profile || {}) },
+        entries: Array.isArray(parsed.entries) ? parsed.entries : [],
+        injections: Array.isArray(parsed.injections) ? parsed.injections : [],
+        photos: Array.isArray(parsed.photos) ? parsed.photos : []
+      };
+    } catch (error) {
+      console.warn("Falha ao carregar dados locais.", error);
+      return emptyState();
+    }
+  };
+
+  const write = (state) => {
+    const next = { ...state, updatedAt: new Date().toISOString() };
+    localStorage.setItem(KEY, JSON.stringify(next));
+    return next;
+  };
+
+  const calculateAdherence = (entry) => {
+    const checks = [
+      Boolean(entry.waterDone || toNumber(entry.water) >= PROFILE.dailyWaterMin),
+      Boolean(entry.proteinDone || toNumber(entry.protein) >= PROFILE.dailyProtein),
+      Boolean(entry.caloriesDone || (toNumber(entry.calories) > 0 && toNumber(entry.calories) <= PROFILE.dailyCalories)),
+      Boolean(entry.strengthDone),
+      Boolean(entry.cardioDone),
+      Boolean(entry.sleepDone || toNumber(entry.sleep) >= PROFILE.dailySleep),
+      Boolean(entry.stepsDone || toNumber(entry.steps) >= PROFILE.dailySteps),
+      Boolean(entry.applicationDone)
+    ];
+    return Math.round((checks.filter(Boolean).length / checks.length) * 100);
+  };
+
+  const sanitizeEntry = (entry) => {
+    const next = {
+      date: normalizeDate(entry.date),
+      weight: toNumber(entry.weight),
+      waist: toNumber(entry.waist),
+      protein: toNumber(entry.protein),
+      calories: toNumber(entry.calories),
+      steps: Math.round(toNumber(entry.steps)),
+      water: toNumber(entry.water),
+      sleep: toNumber(entry.sleep),
+      notes: String(entry.notes || "").trim(),
+      waterDone: Boolean(entry.waterDone),
+      proteinDone: Boolean(entry.proteinDone),
+      caloriesDone: Boolean(entry.caloriesDone),
+      strengthDone: Boolean(entry.strengthDone),
+      cardioDone: Boolean(entry.cardioDone),
+      sleepDone: Boolean(entry.sleepDone),
+      stepsDone: Boolean(entry.stepsDone),
+      applicationDone: Boolean(entry.applicationDone)
+    };
+    next.adherence = calculateAdherence(next);
+    return next;
+  };
+
+  const sanitizeInjection = (item) => ({
+    id: item.id || newId(),
+    date: normalizeDate(item.date),
+    dose: toNumber(item.dose, 2.5),
+    weight: toNumber(item.weight),
+    severity: Math.max(0, Math.min(5, Math.round(toNumber(item.severity)))),
+    sideEffects: Array.isArray(item.sideEffects) ? item.sideEffects.map(String) : [],
+    notes: String(item.notes || "").trim()
+  });
+
+  const saveEntry = (entry) => {
+    const state = read();
+    const sanitized = sanitizeEntry(entry);
+    state.entries = state.entries.filter((item) => item.date !== sanitized.date);
+    state.entries.push(sanitized);
+    state.entries.sort(byDateAsc);
+    return write(state);
+  };
+
+  const deleteEntry = (date) => {
+    const state = read();
+    state.entries = state.entries.filter((item) => item.date !== normalizeDate(date));
+    return write(state);
+  };
+
+  const saveInjection = (item) => {
+    const state = read();
+    state.injections.push(sanitizeInjection(item));
+    state.injections.sort(byDateAsc);
+    return write(state);
+  };
+
+  const savePhoto = (photo) => {
+    const state = read();
+    state.photos.push({
+      id: photo.id || newId(),
+      date: normalizeDate(photo.date),
+      category: String(photo.category || "Frente"),
+      image: photo.image,
+      name: String(photo.name || "foto"),
+      createdAt: new Date().toISOString()
+    });
+    state.photos.sort(byDateAsc);
+    return write(state);
+  };
+
+  const deletePhoto = (id) => {
+    const state = read();
+    state.photos = state.photos.filter((photo) => photo.id !== id);
+    return write(state);
+  };
+
+  const importState = (incoming) => {
+    const base = emptyState();
+    const next = {
+      ...base,
+      ...incoming,
+      profile: { ...PROFILE, ...(incoming.profile || {}) },
+      entries: (incoming.entries || []).map(sanitizeEntry).sort(byDateAsc),
+      injections: (incoming.injections || []).map(sanitizeInjection).sort(byDateAsc),
+      photos: Array.isArray(incoming.photos) ? incoming.photos : []
+    };
+    return write(next);
+  };
+
+  const getLatestEntry = (state = read()) => [...state.entries].sort(byDateDesc)[0] || null;
+
+  const getFirstEntryWith = (state, field) =>
+    [...state.entries].sort(byDateAsc).find((entry) => toNumber(entry[field]) > 0) || null;
+
+  const average = (items, field) => {
+    const values = items.map((item) => toNumber(item[field])).filter((value) => value > 0);
+    if (!values.length) return 0;
+    return values.reduce((sum, value) => sum + value, 0) / values.length;
+  };
+
+  const daysBetween = (a, b) => {
+    const start = new Date(`${normalizeDate(a)}T00:00:00`);
+    const end = new Date(`${normalizeDate(b)}T00:00:00`);
+    return Math.max(0, Math.round((end - start) / 86400000));
+  };
+
+  const calculateMetrics = (state = read()) => {
+    const profile = state.profile;
+    const entries = [...state.entries].sort(byDateAsc);
+    const latest = getLatestEntry(state);
+    const currentWeight = latest?.weight || profile.initialWeight;
+    const firstDate = entries[0]?.date || new Date().toISOString().slice(0, 10);
+    const latestDate = latest?.date || firstDate;
+    const totalToLose = profile.initialWeight - profile.targetWeight;
+    const lost = Math.max(0, profile.initialWeight - currentWeight);
+    const remaining = Math.max(0, currentWeight - profile.targetWeight);
+    const percent = totalToLose > 0 ? Math.max(0, Math.min(100, (lost / totalToLose) * 100)) : 0;
+    const bmi = currentWeight / (profile.height * profile.height);
+    const elapsedWeeks = Math.max(daysBetween(firstDate, latestDate) / 7, 0);
+    const weeklyRate = elapsedWeeks > 0 ? lost / elapsedWeeks : 0;
+    const weeksRemaining = weeklyRate > 0 ? remaining / weeklyRate : null;
+    const estimatedDate = weeksRemaining
+      ? new Date(new Date(`${latestDate}T00:00:00`).getTime() + weeksRemaining * 7 * 86400000)
+      : null;
+    const firstWaist = getFirstEntryWith(state, "waist");
+    const currentWaist = latest?.waist || firstWaist?.waist || 0;
+    const waistReduction = firstWaist && currentWaist ? Math.max(0, firstWaist.waist - currentWaist) : 0;
+    const lastEntry = latest || {};
+    const last7 = entries.slice(-7);
+    const last5 = entries.slice(-5);
+    const last3 = entries.slice(-3);
+    const adherence = latest?.adherence || 0;
+
+    return {
+      profile,
+      entries,
+      latest,
+      currentWeight,
+      lost,
+      remaining,
+      percent,
+      bmi,
+      weeklyRate,
+      estimatedDate,
+      currentWaist,
+      waistReduction,
+      adherence,
+      averages: {
+        protein7: average(last7, "protein"),
+        calories7: average(last7, "calories"),
+        water3: average(last3, "water"),
+        protein5: average(last5, "protein")
+      },
+      lastEntry
+    };
+  };
+
+  const generateAlerts = (metrics) => {
+    const alerts = [];
+    if (metrics.weeklyRate > metrics.currentWeight * 0.012) {
+      alerts.push({
+        title: "Atenção: velocidade de perda elevada",
+        body: "Avalie aumento de proteína e calorias."
+      });
+    }
+    if (metrics.entries.length >= 5 && metrics.averages.protein5 > 0 && metrics.averages.protein5 < 130) {
+      alerts.push({
+        title: "Risco aumentado de perda de massa muscular",
+        body: "A proteína média ficou abaixo de 130 g nos últimos 5 dias."
+      });
+    }
+    if (metrics.entries.length >= 3 && metrics.averages.water3 > 0 && metrics.averages.water3 < 2) {
+      alerts.push({
+        title: "Hidratação baixa",
+        body: "A média dos últimos 3 dias ficou abaixo de 2 L."
+      });
+    }
+    return alerts;
+  };
+
+  window.HWPStorage = {
+    PROFILE,
+    read,
+    write,
+    saveEntry,
+    deleteEntry,
+    saveInjection,
+    savePhoto,
+    deletePhoto,
+    importState,
+    calculateAdherence,
+    calculateMetrics,
+    generateAlerts,
+    average,
+    daysBetween,
+    normalizeDate,
+    toNumber
+  };
+})();
+
+    </script>
+    <script data-inline-source="js/charts.js">
+(function () {
+  "use strict";
+
+  const chartInstances = new Map();
+
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const fmtDate = (date) => new Date(`${date}T00:00:00`).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+
+  const getSeriesColor = (index) => [css("--accent"), css("--blue"), css("--green"), css("--orange"), css("--yellow")][index] || css("--text");
+
+  const buildExpectedWeight = (entries, profile) => {
+    if (!entries.length) return [];
+    const start = entries[0].date;
+    return entries.map((entry) => {
+      const weeks = HWPStorage.daysBetween(start, entry.date) / 7;
+      return Math.max(profile.targetWeight, profile.initialWeight - weeks * 0.75);
+    });
+  };
+
+  const weeklyAdherence = (entries) => {
+    const groups = new Map();
+    entries.forEach((entry) => {
+      const date = new Date(`${entry.date}T00:00:00`);
+      const monday = new Date(date);
+      monday.setDate(date.getDate() - ((date.getDay() + 6) % 7));
+      const key = monday.toISOString().slice(0, 10);
+      const list = groups.get(key) || [];
+      list.push(entry.adherence || 0);
+      groups.set(key, list);
+    });
+    return [...groups.entries()].map(([date, values]) => ({
+      date,
+      value: values.reduce((sum, value) => sum + value, 0) / values.length
+    }));
+  };
+
+  const movingAverage = (entries, field, windowSize = 7) =>
+    entries.map((entry, index) => {
+      const slice = entries.slice(Math.max(0, index - windowSize + 1), index + 1);
+      return HWPStorage.average(slice, field);
+    });
+
+  const bmiSeries = (entries, height) =>
+    entries.map((entry) => (entry.weight ? entry.weight / (height * height) : 0));
+
+  const datasets = (state, metrics) => {
+    const entries = metrics.entries;
+    const labels = entries.map((entry) => fmtDate(entry.date));
+    const weekly = weeklyAdherence(entries);
+
+    return {
+      weightChart: {
+        labels,
+        series: [
+          { label: "Peso real", values: entries.map((entry) => entry.weight), color: getSeriesColor(0) },
+          { label: "Peso esperado", values: buildExpectedWeight(entries, state.profile), color: getSeriesColor(1), dashed: true }
+        ],
+        suffix: " kg"
+      },
+      waistChart: {
+        labels,
+        series: [{ label: "Cintura", values: entries.map((entry) => entry.waist), color: getSeriesColor(2) }],
+        suffix: " cm"
+      },
+      adherenceChart: {
+        labels: weekly.map((item) => fmtDate(item.date)),
+        series: [{ label: "Aderência", values: weekly.map((item) => item.value), color: getSeriesColor(3) }],
+        suffix: "%"
+      },
+      proteinChart: {
+        labels,
+        series: [
+          { label: "Proteína", values: movingAverage(entries, "protein"), color: getSeriesColor(2) },
+          { label: "Meta", values: entries.map(() => state.profile.dailyProtein), color: getSeriesColor(1), dashed: true }
+        ],
+        suffix: " g"
+      },
+      caloriesChart: {
+        labels,
+        series: [
+          { label: "Calorias", values: movingAverage(entries, "calories"), color: getSeriesColor(4) },
+          { label: "Meta", values: entries.map(() => state.profile.dailyCalories), color: getSeriesColor(0), dashed: true }
+        ],
+        suffix: " kcal"
+      },
+      bmiChart: {
+        labels,
+        series: [{ label: "IMC", values: bmiSeries(entries, state.profile.height), color: getSeriesColor(1) }],
+        suffix: ""
+      }
+    };
+  };
+
+  const destroyChartJs = (id) => {
+    const instance = chartInstances.get(id);
+    if (instance?.destroy) instance.destroy();
+    chartInstances.delete(id);
+  };
+
+  const renderWithChartJs = (canvas, config) => {
+    if (!window.Chart) return false;
+    destroyChartJs(canvas.id);
+    const chart = new Chart(canvas, {
+      type: "line",
+      data: {
+        labels: config.labels,
+        datasets: config.series.map((serie) => ({
+          label: serie.label,
+          data: serie.values,
+          borderColor: serie.color,
+          backgroundColor: `${serie.color}22`,
+          borderDash: serie.dashed ? [6, 5] : [],
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          tension: 0.32,
+          fill: false
+        }))
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: css("--muted"), boxWidth: 12, usePointStyle: true } },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.dataset.label}: ${Number(ctx.parsed.y || 0).toFixed(1)}${config.suffix}`
+            }
+          }
+        },
+        scales: {
+          x: { ticks: { color: css("--muted") }, grid: { color: "transparent" } },
+          y: { ticks: { color: css("--muted") }, grid: { color: css("--line") } }
+        }
+      }
+    });
+    chartInstances.set(canvas.id, chart);
+    return true;
+  };
+
+  const drawFallback = (canvas, config) => {
+    destroyChartJs(canvas.id);
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.max(320, Math.floor(rect.width * dpr));
+    canvas.height = Math.max(220, Math.floor(rect.height * dpr));
+
+    const ctx = canvas.getContext("2d");
+    ctx.scale(dpr, dpr);
+    const width = canvas.width / dpr;
+    const height = canvas.height / dpr;
+    const pad = { top: 20, right: 16, bottom: 34, left: 46 };
+    const plotW = width - pad.left - pad.right;
+    const plotH = height - pad.top - pad.bottom;
+    const text = css("--text");
+    const muted = css("--muted");
+    const line = css("--line");
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.font = "12px system-ui, -apple-system, sans-serif";
+    ctx.fillStyle = muted;
+
+    const values = config.series.flatMap((serie) => serie.values).filter((value) => Number.isFinite(value) && value > 0);
+    if (!values.length || !config.labels.length) {
+      ctx.fillStyle = muted;
+      ctx.textAlign = "center";
+      ctx.fillText("Adicione check-ins para visualizar este gráfico.", width / 2, height / 2);
+      return;
+    }
+
+    let min = Math.min(...values);
+    let max = Math.max(...values);
+    if (min === max) {
+      min -= 1;
+      max += 1;
+    }
+    const padding = (max - min) * 0.12;
+    min -= padding;
+    max += padding;
+
+    const xFor = (index) => pad.left + (config.labels.length === 1 ? plotW / 2 : (index / (config.labels.length - 1)) * plotW);
+    const yFor = (value) => pad.top + (1 - (value - min) / (max - min)) * plotH;
+
+    ctx.strokeStyle = line;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let i = 0; i <= 4; i += 1) {
+      const y = pad.top + (plotH / 4) * i;
+      ctx.moveTo(pad.left, y);
+      ctx.lineTo(width - pad.right, y);
+      const label = max - ((max - min) / 4) * i;
+      ctx.fillStyle = muted;
+      ctx.textAlign = "right";
+      ctx.fillText(label.toFixed(label > 100 ? 0 : 1), pad.left - 8, y + 4);
+    }
+    ctx.stroke();
+
+    config.series.forEach((serie) => {
+      ctx.strokeStyle = serie.color;
+      ctx.lineWidth = 3;
+      ctx.setLineDash(serie.dashed ? [6, 5] : []);
+      ctx.beginPath();
+      let started = false;
+      serie.values.forEach((value, index) => {
+        if (!Number.isFinite(value) || value <= 0) return;
+        const x = xFor(index);
+        const y = yFor(value);
+        if (!started) {
+          ctx.moveTo(x, y);
+          started = true;
+        }
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      serie.values.forEach((value, index) => {
+        if (!Number.isFinite(value) || value <= 0) return;
+        ctx.fillStyle = serie.color;
+        ctx.beginPath();
+        ctx.arc(xFor(index), yFor(value), 3.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    });
+
+    const firstLabel = config.labels[0];
+    const lastLabel = config.labels[config.labels.length - 1];
+    ctx.fillStyle = muted;
+    ctx.textAlign = "left";
+    ctx.fillText(firstLabel, pad.left, height - 10);
+    ctx.textAlign = "right";
+    ctx.fillText(lastLabel, width - pad.right, height - 10);
+
+    let legendX = pad.left;
+    config.series.forEach((serie) => {
+      ctx.fillStyle = serie.color;
+      ctx.fillRect(legendX, 6, 10, 10);
+      ctx.fillStyle = text;
+      ctx.textAlign = "left";
+      ctx.fillText(serie.label, legendX + 14, 15);
+      legendX += ctx.measureText(serie.label).width + 42;
+    });
+  };
+
+  const renderCanvas = (id, config) => {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    if (!renderWithChartJs(canvas, config)) drawFallback(canvas, config);
+  };
+
+  const renderAll = (state, metrics) => {
+    const all = datasets(state, metrics);
+    Object.entries(all).forEach(([id, config]) => renderCanvas(id, config));
+  };
+
+  const getImages = () =>
+    ["weightChart", "waistChart", "adherenceChart", "proteinChart", "caloriesChart", "bmiChart"]
+      .map((id) => {
+        const canvas = document.getElementById(id);
+        return canvas ? { id, image: canvas.toDataURL("image/png") } : null;
+      })
+      .filter(Boolean);
+
+  window.HWPCharts = {
+    renderAll,
+    getImages,
+    datasets
+  };
+})();
+
+    </script>
+    <script data-inline-source="js/export.js">
+(function () {
+  "use strict";
+
+  const downloadBlob = (content, filename, type) => {
+    const blob = content instanceof Blob ? content : new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  const formatDateTime = () => new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+
+  const entryRows = (state) =>
+    state.entries.map((entry) => ({
+      Data: entry.date,
+      Peso: entry.weight,
+      Cintura: entry.waist,
+      Proteina: entry.protein,
+      Calorias: entry.calories,
+      Passos: entry.steps,
+      Agua: entry.water,
+      Sono: entry.sleep,
+      Aderencia: entry.adherence,
+      Musculacao: entry.strengthDone ? "Sim" : "Nao",
+      Cardio: entry.cardioDone ? "Sim" : "Nao",
+      Aplicacao: entry.applicationDone ? "Sim" : "Nao",
+      Observacoes: entry.notes
+    }));
+
+  const injectionRows = (state) =>
+    state.injections.map((item) => ({
+      Data: item.date,
+      Dose: `${String(item.dose).replace(".", ",")} mg`,
+      Peso: item.weight,
+      Escala: item.severity,
+      Efeitos: item.sideEffects.join(", "),
+      Observacoes: item.notes
+    }));
+
+  const exportJson = (state) => {
+    downloadBlob(JSON.stringify(state, null, 2), `health-weight-pro-backup-${formatDateTime()}.json`, "application/json;charset=utf-8");
+  };
+
+  const importJsonFile = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          resolve(JSON.parse(reader.result));
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = () => reject(reader.error);
+      reader.readAsText(file);
+    });
+
+  const exportExcel = (state) => {
+    const rows = entryRows(state);
+    const injections = injectionRows(state);
+    if (window.XLSX) {
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows), "Check-ins");
+      XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(injections), "Tirzepatida");
+      XLSX.writeFile(workbook, `health-weight-pro-${formatDateTime()}.xlsx`);
+      return;
+    }
+
+    const table = (title, data) => {
+      const keys = Object.keys(data[0] || { SemDados: "" });
+      const head = keys.map((key) => `<th>${key}</th>`).join("");
+      const body = data.length
+        ? data.map((row) => `<tr>${keys.map((key) => `<td>${row[key] ?? ""}</td>`).join("")}</tr>`).join("")
+        : `<tr><td></td></tr>`;
+      return `<h2>${title}</h2><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+    };
+
+    const html = `<!doctype html><html><head><meta charset="utf-8"></head><body>${table("Check-ins", rows)}${table("Tirzepatida", injections)}</body></html>`;
+    downloadBlob(html, `health-weight-pro-${formatDateTime()}.xls`, "application/vnd.ms-excel;charset=utf-8");
+  };
+
+  const metricList = (metrics) => [
+    ["Peso atual", `${metrics.currentWeight.toFixed(1)} kg`],
+    ["Peso perdido", `${metrics.lost.toFixed(1)} kg`],
+    ["Peso restante", `${metrics.remaining.toFixed(1)} kg`],
+    ["Meta concluida", `${metrics.percent.toFixed(0)}%`],
+    ["IMC", metrics.bmi.toFixed(1)],
+    ["Taxa semanal", `${metrics.weeklyRate.toFixed(2)} kg/semana`],
+    ["Cintura atual", metrics.currentWaist ? `${metrics.currentWaist.toFixed(1)} cm` : "-"],
+    ["Reducao de cintura", `${metrics.waistReduction.toFixed(1)} cm`]
+  ];
+
+  const exportPdf = async (state, metrics) => {
+    const alerts = HWPStorage.generateAlerts(metrics);
+    if (window.jspdf?.jsPDF) {
+      const pdf = new jspdf.jsPDF({ unit: "pt", format: "a4" });
+      let y = 42;
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(18);
+      pdf.text("Health Weight Pro 2.0", 40, y);
+      y += 26;
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(11);
+      metricList(metrics).forEach(([label, value]) => {
+        pdf.text(`${label}: ${value}`, 40, y);
+        y += 17;
+      });
+      if (alerts.length) {
+        y += 8;
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Alertas", 40, y);
+        y += 16;
+        pdf.setFont("helvetica", "normal");
+        alerts.forEach((alert) => {
+          pdf.text(`- ${alert.title}. ${alert.body}`, 40, y, { maxWidth: 510 });
+          y += 26;
+        });
+      }
+
+      HWPCharts.getImages().forEach((chart, index) => {
+        if (index % 2 === 0 || y > 640) {
+          pdf.addPage();
+          y = 42;
+        }
+        pdf.addImage(chart.image, "PNG", 40, y, 510, 230);
+        y += 252;
+      });
+      pdf.save(`health-weight-pro-relatorio-${formatDateTime()}.pdf`);
+      return;
+    }
+
+    const rows = entryRows(state).slice(-30);
+    const popup = window.open("", "_blank");
+    if (!popup) {
+      window.print();
+      return;
+    }
+    popup.document.write(`<!doctype html>
+      <html lang="pt-BR">
+        <head>
+          <meta charset="utf-8">
+          <title>Relatório Health Weight Pro</title>
+          <style>
+            body{font-family:system-ui,-apple-system,sans-serif;margin:32px;color:#111}
+            h1{margin-bottom:8px}
+            .metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:20px 0}
+            .metric{border:1px solid #ddd;border-radius:8px;padding:12px}
+            img{width:100%;max-width:720px;margin:12px 0;border:1px solid #ddd;border-radius:8px}
+            table{border-collapse:collapse;width:100%;font-size:12px}
+            th,td{border-bottom:1px solid #ddd;text-align:left;padding:8px}
+          </style>
+        </head>
+        <body>
+          <h1>Health Weight Pro 2.0</h1>
+          <p>Relatório gerado em ${new Date().toLocaleString("pt-BR")}.</p>
+          <section class="metrics">${metricList(metrics).map(([label, value]) => `<div class="metric"><strong>${label}</strong><br>${value}</div>`).join("")}</section>
+          <h2>Alertas</h2>
+          ${alerts.length ? `<ul>${alerts.map((alert) => `<li>${alert.title}. ${alert.body}</li>`).join("")}</ul>` : "<p>Nenhum alerta ativo.</p>"}
+          <h2>Gráficos</h2>
+          ${HWPCharts.getImages().map((chart) => `<img src="${chart.image}" alt="${chart.id}">`).join("")}
+          <h2>Histórico recente</h2>
+          <table><thead><tr>${Object.keys(rows[0] || { Data: "" }).map((key) => `<th>${key}</th>`).join("")}</tr></thead>
+          <tbody>${rows.map((row) => `<tr>${Object.values(row).map((value) => `<td>${value ?? ""}</td>`).join("")}</tr>`).join("")}</tbody></table>
+          <script>window.onload=()=>setTimeout(()=>window.print(),250)<\/script>
+        </body>
+      </html>`);
+    popup.document.close();
+  };
+
+  window.HWPExport = {
+    exportJson,
+    importJsonFile,
+    exportExcel,
+    exportPdf
+  };
+})();
+
+    </script>
+    <script data-inline-source="js/pwa.js">
+(function () {
+  "use strict";
+
+  let deferredPrompt = null;
+
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredPrompt = event;
+    window.dispatchEvent(new CustomEvent("hwp-install-ready"));
+  });
+
+  window.HWPPwa = {
+    async install() {
+      if (!deferredPrompt) return false;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      return true;
+    },
+    canInstall() {
+      return Boolean(deferredPrompt);
+    }
+  };
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js").catch((error) => {
+        console.warn("Service worker não registrado.", error);
+      });
+    });
+  }
+})();
+
+    </script>
+    <script data-inline-source="js/app.js">
+(function () {
+  "use strict";
+
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+
+  const formatKg = (value) => `${Number(value || 0).toFixed(1).replace(".", ",")} kg`;
+  const formatCm = (value) => (value ? `${Number(value).toFixed(1).replace(".", ",")} cm` : "-");
+  const formatPercent = (value) => `${Math.round(value || 0)}%`;
+  const formatDate = (date) => (date ? new Date(`${date}T00:00:00`).toLocaleDateString("pt-BR") : "-");
+  const today = () => new Date().toISOString().slice(0, 10);
+  const escapeHtml = (value) =>
+    String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+
+  let state = HWPStorage.read();
+  let metrics = HWPStorage.calculateMetrics(state);
+  let toastTimer = null;
+
+  const showToast = (message) => {
+    const toast = $("#toast");
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2400);
+  };
+
+  const refreshState = () => {
+    state = HWPStorage.read();
+    metrics = HWPStorage.calculateMetrics(state);
+    render();
+  };
+
+  const scoreClass = (score) => {
+    if (score >= 71) return "score-pill high";
+    if (score >= 41) return "score-pill medium";
+    return "score-pill";
+  };
+
+  const metricCard = ({ label, value, sub, wide = false, progress = null }) => `
+    <article class="metric-card ${wide ? "wide" : ""}">
+      <div>
+        <div class="metric-label">${label}</div>
+        <div class="metric-value">${value}</div>
+        <div class="metric-sub">${sub}</div>
+      </div>
+      ${progress === null ? "" : `<div class="progress-track" aria-hidden="true"><div class="progress-bar" style="width:${Math.max(0, Math.min(100, progress))}%"></div></div>`}
+    </article>`;
+
+  const renderMetrics = () => {
+    $("#scorePill").className = scoreClass(metrics.adherence);
+    $("#scorePill").textContent = formatPercent(metrics.adherence);
+    const estimated = metrics.estimatedDate ? metrics.estimatedDate.toLocaleDateString("pt-BR") : "Registre mais dias";
+    $("#metricsGrid").innerHTML = [
+      metricCard({
+        label: "Peso atual",
+        value: formatKg(metrics.currentWeight),
+        sub: `Inicial ${formatKg(metrics.profile.initialWeight)} • Perdido ${formatKg(metrics.lost)} • Restante ${formatKg(metrics.remaining)}`,
+        wide: true
+      }),
+      metricCard({
+        label: "Meta",
+        value: formatPercent(metrics.percent),
+        sub: `Rumo a ${formatKg(metrics.profile.targetWeight)}`,
+        wide: true,
+        progress: metrics.percent
+      }),
+      metricCard({
+        label: "IMC",
+        value: metrics.bmi.toFixed(1).replace(".", ","),
+        sub: `Altura ${metrics.profile.height.toFixed(2).replace(".", ",")} m`
+      }),
+      metricCard({
+        label: "Taxa semanal",
+        value: `${metrics.weeklyRate.toFixed(2).replace(".", ",")} kg`,
+        sub: "kg perdidos por semana"
+      }),
+      metricCard({
+        label: "Data estimada",
+        value: estimated,
+        sub: `Meta de ${formatKg(metrics.profile.targetWeight)}`
+      }),
+      metricCard({
+        label: "Circunferência abdominal",
+        value: formatCm(metrics.currentWaist),
+        sub: `Redução total ${formatCm(metrics.waistReduction)}`
+      })
+    ].join("");
+  };
+
+  const renderAlerts = () => {
+    const alerts = HWPStorage.generateAlerts(metrics);
+    $("#alertList").innerHTML = alerts.length
+      ? alerts.map((alert) => `<article class="alert-card"><strong>${escapeHtml(alert.title)}</strong><span>${escapeHtml(alert.body)}</span></article>`).join("")
+      : `<article class="alert-card"><strong>Sem alertas ativos</strong><span>Continue registrando seus dados para acompanhar tendências.</span></article>`;
+  };
+
+  const setFormCheckbox = (form, name, checked) => {
+    const input = form.elements[name];
+    if (input) input.checked = Boolean(checked);
+  };
+
+  const fillDailyForm = (entry = null) => {
+    const form = $("#dailyForm");
+    const data = entry || { date: today() };
+    form.elements.date.value = data.date || today();
+    ["weight", "waist", "protein", "calories", "steps", "water", "sleep", "notes"].forEach((name) => {
+      form.elements[name].value = data[name] || "";
+    });
+    ["waterDone", "proteinDone", "caloriesDone", "strengthDone", "cardioDone", "sleepDone", "stepsDone", "applicationDone"].forEach((name) =>
+      setFormCheckbox(form, name, data[name])
+    );
+    autoCheckGoals();
+  };
+
+  const autoCheckGoals = () => {
+    const form = $("#dailyForm");
+    const water = HWPStorage.toNumber(form.elements.water.value);
+    const protein = HWPStorage.toNumber(form.elements.protein.value);
+    const calories = HWPStorage.toNumber(form.elements.calories.value);
+    const sleep = HWPStorage.toNumber(form.elements.sleep.value);
+    const steps = HWPStorage.toNumber(form.elements.steps.value);
+    if (water >= 3) form.elements.waterDone.checked = true;
+    if (protein >= 170) form.elements.proteinDone.checked = true;
+    if (calories > 0 && calories <= 1900) form.elements.caloriesDone.checked = true;
+    if (sleep >= 7.5) form.elements.sleepDone.checked = true;
+    if (steps >= 8000) form.elements.stepsDone.checked = true;
+  };
+
+  const entryFromForm = () => {
+    const form = $("#dailyForm");
+    return {
+      date: form.elements.date.value,
+      weight: form.elements.weight.value,
+      waist: form.elements.waist.value,
+      protein: form.elements.protein.value,
+      calories: form.elements.calories.value,
+      steps: form.elements.steps.value,
+      water: form.elements.water.value,
+      sleep: form.elements.sleep.value,
+      notes: form.elements.notes.value,
+      waterDone: form.elements.waterDone.checked,
+      proteinDone: form.elements.proteinDone.checked,
+      caloriesDone: form.elements.caloriesDone.checked,
+      strengthDone: form.elements.strengthDone.checked,
+      cardioDone: form.elements.cardioDone.checked,
+      sleepDone: form.elements.sleepDone.checked,
+      stepsDone: form.elements.stepsDone.checked,
+      applicationDone: form.elements.applicationDone.checked
+    };
+  };
+
+  const renderDailyHistory = () => {
+    const recent = [...state.entries].reverse().slice(0, 12);
+    $("#dailyHistory").innerHTML = recent.length
+      ? recent.map((entry) => `
+        <tr>
+          <td>${formatDate(entry.date)}</td>
+          <td>${formatKg(entry.weight)}</td>
+          <td>${formatCm(entry.waist)}</td>
+          <td>${formatPercent(entry.adherence)}</td>
+        </tr>`).join("")
+      : `<tr><td colspan="4" class="empty-state">Nenhum check-in salvo ainda.</td></tr>`;
+  };
+
+  const renderTirzepatideHistory = () => {
+    const recent = [...state.injections].reverse();
+    $("#tirzepatideHistory").innerHTML = recent.length
+      ? recent.map((item) => `
+        <tr>
+          <td>${formatDate(item.date)}</td>
+          <td>${String(item.dose).replace(".", ",")} mg</td>
+          <td>${item.weight ? formatKg(item.weight) : "-"}</td>
+          <td>${escapeHtml(item.sideEffects.join(", ") || "-")}</td>
+          <td>${item.severity}</td>
+        </tr>`).join("")
+      : `<tr><td colspan="5" class="empty-state">Nenhuma aplicação registrada ainda.</td></tr>`;
+  };
+
+  const renderPhotos = () => {
+    const category = $("#photoCompareCategory").value;
+    const photos = state.photos.filter((photo) => photo.category === category);
+    $("#photoGrid").innerHTML = photos.length
+      ? photos.map((photo) => `
+        <article class="photo-card">
+          <img src="${photo.image}" alt="Foto ${escapeHtml(photo.category)} em ${formatDate(photo.date)}">
+          <footer>
+            <span>${formatDate(photo.date)}</span>
+            <button class="danger-button" type="button" data-delete-photo="${photo.id}">Excluir</button>
+          </footer>
+        </article>`).join("")
+      : `<div class="empty-state">Adicione fotos para comparar mês a mês.</div>`;
+  };
+
+  const render = () => {
+    renderMetrics();
+    renderAlerts();
+    renderDailyHistory();
+    renderTirzepatideHistory();
+    renderPhotos();
+    window.requestAnimationFrame(() => HWPCharts.renderAll(state, metrics));
+  };
+
+  const switchView = (id) => {
+    $$(".tab-button").forEach((button) => button.classList.toggle("is-active", button.dataset.view === id));
+    $$(".view").forEach((view) => view.classList.toggle("is-active", view.id === id));
+    setTimeout(() => HWPCharts.renderAll(state, metrics), 80);
+  };
+
+  const initTabs = () => {
+    $$(".tab-button").forEach((button) => {
+      button.addEventListener("click", () => switchView(button.dataset.view));
+    });
+  };
+
+  const initDailyForm = () => {
+    const form = $("#dailyForm");
+    fillDailyForm(state.entries.find((entry) => entry.date === today()) || metrics.latest);
+    $("#fillTodayButton").addEventListener("click", () => fillDailyForm(state.entries.find((entry) => entry.date === today()) || { date: today() }));
+    ["water", "protein", "calories", "sleep", "steps"].forEach((name) => form.elements[name].addEventListener("input", autoCheckGoals));
+    form.elements.date.addEventListener("change", () => {
+      const entry = state.entries.find((item) => item.date === form.elements.date.value);
+      fillDailyForm(entry || { date: form.elements.date.value });
+    });
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      HWPStorage.saveEntry(entryFromForm());
+      showToast("Check-in salvo.");
+      refreshState();
+    });
+    $("#deleteEntryButton").addEventListener("click", () => {
+      if (!form.elements.date.value) return;
+      HWPStorage.deleteEntry(form.elements.date.value);
+      showToast("Registro excluído.");
+      refreshState();
+      fillDailyForm({ date: form.elements.date.value });
+    });
+  };
+
+  const initTirzepatideForm = () => {
+    const form = $("#tirzepatideForm");
+    form.elements.date.value = today();
+    const severity = form.elements.severity;
+    severity.addEventListener("input", () => {
+      $("#severityOutput").textContent = severity.value;
+    });
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const sideEffects = $$('input[name="sideEffects"]:checked', form).map((input) => input.value);
+      HWPStorage.saveInjection({
+        date: form.elements.date.value,
+        dose: form.elements.dose.value,
+        weight: form.elements.weight.value,
+        severity: form.elements.severity.value,
+        sideEffects,
+        notes: form.elements.notes.value
+      });
+      form.reset();
+      form.elements.date.value = today();
+      $("#severityOutput").textContent = "0";
+      showToast("Aplicação salva.");
+      refreshState();
+    });
+  };
+
+  const fileToDataUrl = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+
+  const initPhotos = () => {
+    const form = $("#photoForm");
+    form.elements.date.value = today();
+    $("#photoCompareCategory").addEventListener("change", renderPhotos);
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const file = form.elements.photo.files[0];
+      if (!file) return;
+      const image = await fileToDataUrl(file);
+      HWPStorage.savePhoto({
+        date: form.elements.date.value,
+        category: form.elements.category.value,
+        image,
+        name: file.name
+      });
+      form.reset();
+      form.elements.date.value = today();
+      showToast("Foto salva localmente.");
+      refreshState();
+    });
+    $("#photoGrid").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-delete-photo]");
+      if (!button) return;
+      HWPStorage.deletePhoto(button.dataset.deletePhoto);
+      showToast("Foto excluída.");
+      refreshState();
+    });
+  };
+
+  const initBackup = () => {
+    $("#exportJsonButton").addEventListener("click", () => HWPExport.exportJson(HWPStorage.read()));
+    $("#exportExcelButton").addEventListener("click", () => HWPExport.exportExcel(HWPStorage.read()));
+    $("#exportPdfButton").addEventListener("click", () => HWPExport.exportPdf(HWPStorage.read(), HWPStorage.calculateMetrics(HWPStorage.read())));
+    $("#importJsonInput").addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      try {
+        const incoming = await HWPExport.importJsonFile(file);
+        HWPStorage.importState(incoming);
+        showToast("Backup importado.");
+        refreshState();
+      } catch (error) {
+        console.error(error);
+        showToast("Não foi possível importar o JSON.");
+      } finally {
+        event.target.value = "";
+      }
+    });
+  };
+
+  const initModal = () => {
+    const modal = $("#nutritionModal");
+    $("#nutritionButton").addEventListener("click", () => {
+      if (modal.showModal) modal.showModal();
+    });
+  };
+
+  const initInstall = () => {
+    const button = $("#installButton");
+    const update = () => {
+      button.hidden = !window.HWPPwa?.canInstall();
+    };
+    window.addEventListener("hwp-install-ready", update);
+    button.addEventListener("click", async () => {
+      const installed = await window.HWPPwa.install();
+      if (installed) showToast("Instalação iniciada.");
+      update();
+    });
+    update();
+  };
+
+  const init = () => {
+    initTabs();
+    initDailyForm();
+    initTirzepatideForm();
+    initPhotos();
+    initBackup();
+    initModal();
+    initInstall();
+    render();
+    window.addEventListener("resize", () => HWPCharts.renderAll(state, metrics));
+  };
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
+
+    </script>
+  </body>
+</html>
