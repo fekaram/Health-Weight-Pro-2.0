@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f7f8fb" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Health Weight Pro">
+    <title>Health Weight Pro 2.0</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./assets/icons/icon-180.png">
+    <link rel="icon" href="./assets/icons/icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./css/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Health Weight Pro 2.0</p>
+          <h1>Acompanhamento</h1>
+        </div>
+        <div class="header-actions">
+          <button class="icon-button" id="installButton" type="button" aria-label="Instalar aplicativo" hidden>+</button>
+          <button class="icon-button" id="nutritionButton" type="button" aria-label="Plano nutricional">🍽</button>
+        </div>
+      </header>
+
+      <main>
+        <nav class="tabbar" aria-label="Seções">
+          <button class="tab-button is-active" data-view="dashboard" type="button">Resumo</button>
+          <button class="tab-button" data-view="checkin" type="button">Check-in</button>
+          <button class="tab-button" data-view="tirzepatide" type="button">Tirzepatida</button>
+          <button class="tab-button" data-view="charts" type="button">Gráficos</button>
+          <button class="tab-button" data-view="photos" type="button">Fotos</button>
+          <button class="tab-button" data-view="backup" type="button">Backup</button>
+        </nav>
+
+        <section class="view is-active" id="dashboard" aria-labelledby="dashboardTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Hoje</p>
+              <h2 id="dashboardTitle">Painel principal</h2>
+            </div>
+            <div class="score-pill" id="scorePill">0%</div>
+          </div>
+
+          <div class="metrics-grid" id="metricsGrid"></div>
+          <section class="alert-list" id="alertList" aria-live="polite"></section>
+        </section>
+
+        <section class="view" id="checkin" aria-labelledby="checkinTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Registro diário</p>
+              <h2 id="checkinTitle">Check-in</h2>
+            </div>
+            <button class="secondary-button" id="fillTodayButton" type="button">Usar hoje</button>
+          </div>
+
+          <form class="form-grid" id="dailyForm">
+            <label>Data
+              <input name="date" type="date" required>
+            </label>
+            <label>Peso (kg)
+              <input name="weight" type="number" inputmode="decimal" step="0.1" min="30" max="250" required>
+            </label>
+            <label>Cintura (cm)
+              <input name="waist" type="number" inputmode="decimal" step="0.1" min="40" max="200">
+            </label>
+            <label>Proteína (g)
+              <input name="protein" type="number" inputmode="numeric" step="1" min="0" max="400">
+            </label>
+            <label>Calorias (kcal)
+              <input name="calories" type="number" inputmode="numeric" step="1" min="0" max="6000">
+            </label>
+            <label>Passos
+              <input name="steps" type="number" inputmode="numeric" step="1" min="0" max="80000">
+            </label>
+            <label>Água (L)
+              <input name="water" type="number" inputmode="decimal" step="0.1" min="0" max="12">
+            </label>
+            <label>Sono (horas)
+              <input name="sleep" type="number" inputmode="decimal" step="0.1" min="0" max="18">
+            </label>
+            <label class="span-2">Observações
+              <textarea name="notes" rows="3" placeholder="Fome, treino, libido, cabelo, energia..."></textarea>
+            </label>
+
+            <fieldset class="checklist span-2">
+              <legend>Metas do dia</legend>
+              <label><input name="waterDone" type="checkbox"> Água 3-4 L</label>
+              <label><input name="proteinDone" type="checkbox"> Proteína 170 g</label>
+              <label><input name="caloriesDone" type="checkbox"> Calorias até 1900 kcal</label>
+              <label><input name="strengthDone" type="checkbox"> Musculação</label>
+              <label><input name="cardioDone" type="checkbox"> Cardio</label>
+              <label><input name="sleepDone" type="checkbox"> Sono 7h30+</label>
+              <label><input name="stepsDone" type="checkbox"> Passos 8000+</label>
+              <label><input name="applicationDone" type="checkbox"> Aplicação realizada</label>
+            </fieldset>
+
+            <div class="form-actions span-2">
+              <button class="primary-button" type="submit">Salvar check-in</button>
+              <button class="danger-button" id="deleteEntryButton" type="button">Excluir data</button>
+            </div>
+          </form>
+
+          <section class="history-panel">
+            <h3>Histórico recente</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Peso</th>
+                    <th>Cintura</th>
+                    <th>Aderência</th>
+                  </tr>
+                </thead>
+                <tbody id="dailyHistory"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="tirzepatide" aria-labelledby="tirzepatideTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Controle</p>
+              <h2 id="tirzepatideTitle">Tirzepatida</h2>
+            </div>
+          </div>
+
+          <form class="form-grid" id="tirzepatideForm">
+            <label>Data
+              <input name="date" type="date" required>
+            </label>
+            <label>Dose
+              <select name="dose" required>
+                <option value="2.5">2,5 mg</option>
+                <option value="5">5 mg</option>
+                <option value="7.5">7,5 mg</option>
+                <option value="10">10 mg</option>
+                <option value="12.5">12,5 mg</option>
+                <option value="15">15 mg</option>
+              </select>
+            </label>
+            <label>Peso (kg)
+              <input name="weight" type="number" inputmode="decimal" step="0.1" min="30" max="250">
+            </label>
+            <label>Escala 0 a 5
+              <input name="severity" type="range" min="0" max="5" step="1" value="0">
+              <output id="severityOutput">0</output>
+            </label>
+
+            <fieldset class="checklist span-2">
+              <legend>Efeitos colaterais</legend>
+              <label><input name="sideEffects" type="checkbox" value="Náusea"> Náusea</label>
+              <label><input name="sideEffects" type="checkbox" value="Constipação"> Constipação</label>
+              <label><input name="sideEffects" type="checkbox" value="Refluxo"> Refluxo</label>
+              <label><input name="sideEffects" type="checkbox" value="Dor abdominal"> Dor abdominal</label>
+              <label><input name="sideEffects" type="checkbox" value="Dor de cabeça"> Dor de cabeça</label>
+              <label><input name="sideEffects" type="checkbox" value="Fadiga"> Fadiga</label>
+              <label><input name="sideEffects" type="checkbox" value="Tontura"> Tontura</label>
+              <label><input name="sideEffects" type="checkbox" value="Outros"> Outros</label>
+            </fieldset>
+
+            <label class="span-2">Observações
+              <textarea name="notes" rows="3" placeholder="Local da aplicação, sintomas, apetite, energia..."></textarea>
+            </label>
+
+            <div class="form-actions span-2">
+              <button class="primary-button" type="submit">Salvar aplicação</button>
+            </div>
+          </form>
+
+          <section class="history-panel">
+            <h3>Aplicações registradas</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Dose</th>
+                    <th>Peso</th>
+                    <th>Efeitos</th>
+                    <th>Escala</th>
+                  </tr>
+                </thead>
+                <tbody id="tirzepatideHistory"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="charts" aria-labelledby="chartsTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Tendências</p>
+              <h2 id="chartsTitle">Gráficos</h2>
+            </div>
+          </div>
+          <div class="chart-grid">
+            <section class="chart-panel"><h3>Peso real vs esperado</h3><canvas id="weightChart"></canvas></section>
+            <section class="chart-panel"><h3>Circunferência abdominal</h3><canvas id="waistChart"></canvas></section>
+            <section class="chart-panel"><h3>Aderência semanal</h3><canvas id="adherenceChart"></canvas></section>
+            <section class="chart-panel"><h3>Proteína média diária</h3><canvas id="proteinChart"></canvas></section>
+            <section class="chart-panel"><h3>Calorias médias</h3><canvas id="caloriesChart"></canvas></section>
+            <section class="chart-panel"><h3>IMC</h3><canvas id="bmiChart"></canvas></section>
+          </div>
+        </section>
+
+        <section class="view" id="photos" aria-labelledby="photosTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Evolução</p>
+              <h2 id="photosTitle">Fotos</h2>
+            </div>
+          </div>
+
+          <form class="form-grid" id="photoForm">
+            <label>Data
+              <input name="date" type="date" required>
+            </label>
+            <label>Categoria
+              <select name="category" required>
+                <option>Frente</option>
+                <option>Lado</option>
+                <option>Costas</option>
+              </select>
+            </label>
+            <label class="span-2">Foto local
+              <input name="photo" type="file" accept="image/*" required>
+            </label>
+            <div class="form-actions span-2">
+              <button class="primary-button" type="submit">Salvar foto</button>
+            </div>
+          </form>
+
+          <div class="photo-toolbar">
+            <label>Comparação
+              <select id="photoCompareCategory">
+                <option>Frente</option>
+                <option>Lado</option>
+                <option>Costas</option>
+              </select>
+            </label>
+          </div>
+          <div class="photo-grid" id="photoGrid"></div>
+        </section>
+
+        <section class="view" id="backup" aria-labelledby="backupTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Dados locais</p>
+              <h2 id="backupTitle">Backup e exportação</h2>
+            </div>
+          </div>
+
+          <div class="backup-grid">
+            <button class="primary-button" id="exportJsonButton" type="button">Exportar JSON</button>
+            <label class="file-button">Importar JSON
+              <input id="importJsonInput" type="file" accept="application/json,.json">
+            </label>
+            <button class="secondary-button" id="exportExcelButton" type="button">Exportar Excel</button>
+            <button class="secondary-button" id="exportPdfButton" type="button">Exportar PDF</button>
+          </div>
+          <p class="small-note">Os dados ficam neste dispositivo. Fotos e registros entram no backup JSON.</p>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="nutritionModal">
+      <form method="dialog">
+        <header class="modal-header">
+          <div>
+            <p class="eyebrow">Plano nutricional</p>
+            <h2>1900 kcal</h2>
+          </div>
+          <button class="icon-button" value="close" aria-label="Fechar" type="submit">×</button>
+        </header>
+        <div class="macro-grid">
+          <div><strong>170 g</strong><span>Proteína</span></div>
+          <div><strong>150 g</strong><span>Carboidratos</span></div>
+          <div><strong>65 g</strong><span>Gorduras</span></div>
+        </div>
+        <div class="menu-list">
+          <section><h3>Café</h3><p>3 ovos, 1 fruta e café.</p></section>
+          <section><h3>Almoço</h3><p>180 g de proteína, arroz, feijão e salada.</p></section>
+          <section><h3>Lanche</h3><p>Whey ou iogurte.</p></section>
+          <section><h3>Jantar</h3><p>Proteína, legumes e salada.</p></section>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="./js/storage.js"></script>
+    <script src="./js/charts.js"></script>
+    <script src="./js/export.js"></script>
+    <script src="./js/pwa.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>
