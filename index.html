@@ -2210,48 +2210,19 @@ if (chatgptForm) {
       refresh();
     });
 
-    $("#nutriAiForm").elements.text.addEventListener("input", renderNutriSuggestions);
-    $("#nutriAiForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const form = event.currentTarget;
-      const photo = await readFileAsDataUrl(form.elements.photo.files[0]);
-      const text = form.elements.text.value.trim();
-      const button = form.querySelector("button[type='submit']");
-      button.disabled = true;
-      button.textContent = "Analisando...";
-      try {
-        const result = await HWPNutriAI.analyze({
-          apiKey: state.nutriSettings.apiKey,
-          model: state.nutriSettings.model,
-          text,
-          imageDataUrl: photo
-        });
-        const analysisId = `nutri-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-        const saved = HWPStorage.saveNutriAnalysis({
-          id: analysisId,
-          date: form.elements.date.value,
-          type: photo ? "photo" : "text",
-          inputText: text,
-          photo,
-          foods: result.foods,
-          totals: result.totals
-        });
-        state = saved;
-        currentNutriAnalysis = state.nutriAnalyses.find((item) => item.id === analysisId);
-        showToast("Analise concluida.");
-        render();
-      } catch (error) {
-        console.warn(error);
-        showToast(error.message || "Nao foi possivel analisar.");
-      } finally {
-        button.disabled = false;
-        button.textContent = "Analisar refeicao";
-      }
-    });
-    $("#clearNutriResultButton").addEventListener("click", () => {
-      currentNutriAnalysis = null;
-      $("#nutriAiForm").reset();
-const chatgptForm = $("#chatgptImportForm");
+   const clearButton = $("#clearChatGPTImportButton");
+
+if (clearButton) {
+  clearButton.addEventListener("click", () => {
+    $("#chatgptImportForm").reset();
+
+    const chatgptForm = $("#chatgptImportForm");
+    if (chatgptForm) {
+      chatgptForm.elements.date.value = today();
+    }
+  });
+}
+      const chatgptForm = $("#chatgptImportForm");
 if (chatgptForm) {
   chatgptForm.elements.date.value = today();
 }
@@ -2398,7 +2369,7 @@ if (chatgptForm) {
           switchView("libraryView");
         }
       } else if (target.dataset.suggestMeal) {
-        $("#nutriAiForm").elements.text.value = target.dataset.suggestMeal;
+        $("#chatgptImportForm").elements.text.value = target.dataset.suggestMeal;
         renderNutriSuggestions();
       } else return;
       showToast("Dados atualizados.");
