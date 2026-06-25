@@ -469,55 +469,132 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.42); backdrop-filter: blur(4px); 
           <div class="meal-day" id="mealDay"></div>
         </section>
 
-        <section class="view" id="nutriView">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Analise inteligente</p>
-              <h2>Nutri IA</h2>
-            </div>
-          </div>
-          <form class="form-grid" id="nutriAiForm">
-            <label>Data<input name="date" type="date" required></label>
-            <label class="file-button">Foto da refeicao<input name="photo" type="file" accept="image/jpeg,image/jpg,image/png,image/webp" capture="environment"></label>
-            <label class="full">Descreva sua refeicao<textarea name="text" rows="4" placeholder="Ex.: 200g de frango, arroz e feijao"></textarea></label>
-            <div class="suggestion-strip full" id="nutriSuggestions"></div>
-            <div class="form-actions full">
-              <button class="primary-button" type="submit">Analisar refeicao</button>
-              <button class="secondary-button" id="clearNutriResultButton" type="button">Limpar</button>
-            </div>
-          </form>
+<section class="view" id="nutriView">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Importação inteligente</p>
+      <h2>✨ Nutri IA+</h2>
+    </div>
+  </div>
 
-          <section class="history-panel" id="nutriResultPanel" hidden>
-            <div class="section-heading compact">
-              <div>
-                <p class="eyebrow">Resultado</p>
-                <h2>Analise nutricional</h2>
-              </div>
-            </div>
-            <div class="table-scroll">
-              <table>
-                <thead><tr><th>Alimento</th><th>Quantidade</th><th>Calorias</th><th>Proteina</th><th>Carboidratos</th><th>Gorduras</th><th>Fibras</th></tr></thead>
-                <tbody id="nutriResultBody"></tbody>
-              </table>
-            </div>
-            <div class="summary-grid nutri-total-grid" id="nutriTotals"></div>
-            <div class="form-actions">
-              <label>Adicionar em<select id="nutriTargetSlot"></select></label>
-              <button class="primary-button" id="addNutriToDiaryButton" type="button">Adicionar ao Diario</button>
-              <button class="secondary-button" id="saveNutriFavoriteButton" type="button">Salvar como favorita</button>
-            </div>
-          </section>
+  <div class="card">
+    <p>
+      Envie a foto da refeição para o ChatGPT e cole abaixo o código
+      HWP_FOOD gerado automaticamente.
+    </p>
+  </div>
 
-          <section class="history-panel">
-            <h3>Historico de analises</h3>
-            <div class="table-scroll">
-              <table>
-                <thead><tr><th>Data</th><th>Tipo</th><th>Entrada</th><th>Resultado</th><th>Status</th></tr></thead>
-                <tbody id="nutriHistory"></tbody>
-              </table>
-            </div>
-          </section>
-        </section>
+  <form class="form-grid" id="chatgptImportForm">
+
+    <label>
+      Data
+      <input name="date" type="date" required>
+    </label>
+
+    <label class="full">
+      Código gerado pelo ChatGPT
+      <textarea
+        id="chatgptImportText"
+        name="chatgptImportText"
+        rows="10"
+        placeholder="Cole aqui o bloco HWP_FOOD"></textarea>
+    </label>
+
+    <div class="form-actions full">
+      <button
+        class="primary-button"
+        id="importChatGPTButton"
+        type="submit">
+        Importar do ChatGPT
+      </button>
+
+      <button
+        class="secondary-button"
+        id="clearChatGPTImportButton"
+        type="button">
+        Limpar
+      </button>
+    </div>
+
+  </form>
+
+  <section class="history-panel" id="chatgptPreviewPanel" hidden>
+
+    <div class="section-heading compact">
+      <div>
+        <p class="eyebrow">Pré-visualização</p>
+        <h2>Refeição identificada</h2>
+      </div>
+    </div>
+
+    <div class="summary-grid" id="chatgptPreviewTotals"></div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Campo</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody id="chatgptPreviewBody"></tbody>
+      </table>
+    </div>
+
+  </section>
+
+  <section class="history-panel">
+    <h3>Formato esperado</h3>
+
+    <pre style="white-space:pre-wrap">
+HWP_FOOD
+slot=breakfast
+name=Pão com requeijão e whey
+calories=320
+protein=32
+carbs=25
+fat=9
+fiber=2
+    </pre>
+
+    <p>
+      Slots disponíveis:
+    </p>
+
+    <ul>
+      <li>breakfast = Café da manhã</li>
+      <li>snackMorning = Lanche da manhã</li>
+      <li>lunch = Almoço</li>
+      <li>afternoonSnack = Lanche da tarde</li>
+      <li>preWorkout = Pré-treino</li>
+      <li>postWorkout = Pós-treino</li>
+      <li>dinner = Jantar</li>
+      <li>supper = Ceia</li>
+    </ul>
+
+  </section>
+
+  <section class="history-panel">
+    <h3>Histórico de importações</h3>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Refeição</th>
+            <th>Calorias</th>
+            <th>Proteína</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="chatgptImportHistory"></tbody>
+      </table>
+    </div>
+
+  </section>
+
+</section>
 
         <section class="view" id="trainingView">
           <div class="section-heading">
