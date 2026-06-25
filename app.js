@@ -248,16 +248,22 @@ const render = () => {
 
   const initForms = () => {
     fillDailyForm(state.entries.find((entry) => entry.date === today()) || { date: today() });
-    $("#mealForm").elements.date.value = today();
-const chatgptForm = $("#chatgptImportForm");
+    const mealForm = $("#mealForm");
+if (mealForm) mealForm.elements.date.value = today();
 
-if (chatgptForm) {
-  chatgptForm.elements.date.value = today();
-}
-    $("#workoutForm").elements.date.value = today();
-    $("#tirzepatideForm").elements.date.value = today();
-    $("#photoForm").elements.date.value = today();
-    console.log("PASSOU BLOCO 1");
+const chatgptForm = $("#chatgptImportForm");
+if (chatgptForm) chatgptForm.elements.date.value = today();
+
+const workoutForm = $("#workoutForm");
+if (workoutForm) workoutForm.elements.date.value = today();
+
+const tirzepatideForm = $("#tirzepatideForm");
+if (tirzepatideForm) tirzepatideForm.elements.date.value = today();
+
+const photoForm = $("#photoForm");
+if (photoForm) photoForm.elements.date.value = today();
+
+console.log("PASSOU BLOCO 1");
 
     $$(".tab-button").forEach((button) => button.addEventListener("click", () => switchView(button.dataset.view)));
     $("#fillTodayButton").addEventListener("click", () => fillDailyForm(state.entries.find((entry) => entry.date === today()) || { date: today() }));
