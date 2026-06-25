@@ -257,11 +257,13 @@ if (chatgptForm) {
     $("#workoutForm").elements.date.value = today();
     $("#tirzepatideForm").elements.date.value = today();
     $("#photoForm").elements.date.value = today();
+    console.log("PASSOU BLOCO 1");
 
     $$(".tab-button").forEach((button) => button.addEventListener("click", () => switchView(button.dataset.view)));
     $("#fillTodayButton").addEventListener("click", () => fillDailyForm(state.entries.find((entry) => entry.date === today()) || { date: today() }));
     ["water", "protein", "calories", "sleep", "steps"].forEach((name) => $("#dailyForm").elements[name].addEventListener("input", autoCheckGoals));
     $("#dailyForm").elements.date.addEventListener("change", () => fillDailyForm(state.entries.find((entry) => entry.date === $("#dailyForm").elements.date.value) || { date: $("#dailyForm").elements.date.value }));
+    console.log("PASSOU BLOCO 2");
     $("#dailyForm").addEventListener("submit", (event) => {
       event.preventDefault();
       HWPStorage.saveEntry(entryFromForm());
@@ -276,6 +278,7 @@ if (chatgptForm) {
     });
 
     $("#mealForm").elements.date.addEventListener("change", renderMeals);
+    console.log("PASSOU BLOCO 3");
     $("#mealForm").addEventListener("submit", async (event) => {
       event.preventDefault();
       const form = event.currentTarget;
