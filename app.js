@@ -12,7 +12,6 @@
   let state = HWPStorage.read();
   let metrics = HWPStorage.calculateMetrics(state);
   let toastTimer = null;
-  let currentNutriAnalysis = null;
 
   const showToast = (message) => {
     const toast = $("#toast");
@@ -213,77 +212,20 @@
       </article>`).join("");
   };
 
-  const renderNutriSlots = () => {
-    const select = $("#nutriTargetSlot");
-    if (select) select.innerHTML = HWPStorage.activeMealSlots(state).map((slot) => `<option value="${slot.id}">${slot.label}</option>`).join("");
-  };
+const render = () => {
+  renderMetrics();
+  renderAlerts();
+  renderDailyHistory();
+  renderMeals();
+  renderWorkoutHistory();
+  renderTirzepatideHistory();
+  renderPhotos();
+  renderFavorites();
 
-  const renderNutriResult = () => {
-    const panel = $("#nutriResultPanel");
-    if (!panel) return;
-    if (!currentNutriAnalysis) {
-      panel.hidden = true;
-      return;
-    }
-    panel.hidden = false;
-    $("#nutriResultBody").innerHTML = currentNutriAnalysis.foods.map((food) => `
-      <tr>
-        <td>${escapeHtml(food.name)}</td>
-        <td>${escapeHtml(food.quantity)}</td>
-        <td>${int(food.calories)}</td>
-        <td>${fmt(food.protein, " g")}</td>
-        <td>${fmt(food.carbs, " g")}</td>
-        <td>${fmt(food.fat, " g")}</td>
-        <td>${fmt(food.fiber, " g")}</td>
-      </tr>`).join("");
-    const totals = currentNutriAnalysis.totals;
-    $("#nutriTotals").innerHTML = [
-      ["Calorias", `${int(totals.calories)} kcal`],
-      ["Proteina", `${fmt(totals.protein, " g")}`],
-      ["Carboidratos", `${fmt(totals.carbs, " g")}`],
-      ["Gorduras", `${fmt(totals.fat, " g")}`],
-      ["Fibras", `${fmt(totals.fiber, " g")}`]
-    ].map(([label, value]) => `<article class="summary-card"><span>${label}</span><strong>${value}</strong></article>`).join("");
-  };
+  HWPSettings.fill($("#settingsForm"), state);
 
-  const renderNutriHistory = () => {
-    const body = $("#nutriHistory");
-    if (!body) return;
-    body.innerHTML = state.nutriAnalyses.length
-      ? [...state.nutriAnalyses].reverse().slice(0, 20).map((item) => `
-        <tr>
-          <td>${dateFmt(item.date)}</td>
-          <td>${item.type === "photo" ? "Foto" : "Texto"}</td>
-          <td>${escapeHtml(item.inputText || (item.photo ? "Foto enviada" : "-"))}</td>
-          <td>${int(item.totals.calories)} kcal | ${int(item.totals.protein)} g P</td>
-          <td><span class="status-pill ${item.addedMealId ? "done" : ""}">${item.addedMealId ? "No diario" : "Analisada"}</span></td>
-        </tr>`).join("")
-      : `<tr><td colspan="5" class="empty-state">Nenhuma analise registrada ainda.</td></tr>`;
-  };
-
-  const renderNutriSuggestions = () => {
-    const strip = $("#nutriSuggestions");
-    const input = $("#nutriAiForm")?.elements.text;
-    if (!strip || !input) return;
-    const suggestions = HWPStorage.mealSuggestions(state, input.value);
-    strip.innerHTML = suggestions.map((item) => `<button class="suggestion-chip" type="button" data-suggest-meal="${escapeHtml(item.label)}">${escapeHtml(item.label)} <span>${item.source}</span></button>`).join("");
-  };
-
-  const render = () => {
-    renderMetrics();
-    renderAlerts();
-    renderDailyHistory();
-    renderMeals();
-    renderWorkoutHistory();
-    renderTirzepatideHistory();
-    renderPhotos();
-    renderFavorites();
-    renderNutriSlots();
-    renderNutriResult();
-    renderNutriHistory();
-    renderNutriSuggestions();
-    HWPSettings.fill($("#settingsForm"), state);
-    requestAnimationFrame(() => HWPCharts.renderAll(state, metrics));
+  requestAnimationFrame(() => HWPCharts.renderAll(state, metrics));
+};
   };
 
   const switchView = (id) => {
@@ -307,7 +249,7 @@
   const initForms = () => {
     fillDailyForm(state.entries.find((entry) => entry.date === today()) || { date: today() });
     $("#mealForm").elements.date.value = today();
-    $("#nutriAiForm").elements.date.value = today();
+   $("#chatgptImportForm").elements.date.value = today();
     $("#workoutForm").elements.date.value = today();
     $("#tirzepatideForm").elements.date.value = today();
     $("#photoForm").elements.date.value = today();
@@ -364,93 +306,79 @@
       refresh();
     });
 
-    $("#nutriAiForm").elements.text.addEventListener("input", renderNutriSuggestions);
-    $("#nutriAiForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const form = event.currentTarget;
-      const photo = await readFileAsDataUrl(form.elements.photo.files[0]);
-      const text = form.elements.text.value.trim();
-      const button = form.querySelector("button[type='submit']");
-      button.disabled = true;
-      button.textContent = "Analisando...";
-      try {
-        const result = await HWPNutriAI.analyze({
-          apiKey: state.nutriSettings.apiKey,
-          model: state.nutriSettings.model,
-          text,
-          imageDataUrl: photo
-        });
-        const analysisId = `nutri-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-        const saved = HWPStorage.saveNutriAnalysis({
-          id: analysisId,
-          date: form.elements.date.value,
-          type: photo ? "photo" : "text",
-          inputText: text,
-          photo,
-          foods: result.foods,
-          totals: result.totals
-        });
-        state = saved;
-        currentNutriAnalysis = state.nutriAnalyses.find((item) => item.id === analysisId);
-        showToast("Analise concluida.");
-        render();
-      } catch (error) {
-        console.warn(error);
-        showToast(error.message || "Nao foi possivel analisar.");
-      } finally {
-        button.disabled = false;
-        button.textContent = "Analisar refeicao";
-      }
+// ======================
+// NUTRI IA+
+// ======================
+
+const parseHWPFood = (text) => {
+  const lines = text.trim().split("\n");
+
+  if (lines[0].trim() !== "HWP_FOOD") {
+    throw new Error("Formato inválido. O código deve iniciar com HWP_FOOD.");
+  }
+
+  const data = {};
+
+  lines.slice(1).forEach((line) => {
+    const [key, ...rest] = line.split("=");
+    data[key.trim()] = rest.join("=").trim();
+  });
+
+  return {
+    slot: data.slot || "lunch",
+    name: data.name || "Refeição",
+    calories: Number(data.calories || 0),
+    protein: Number(data.protein || 0),
+    carbs: Number(data.carbs || 0),
+    fat: Number(data.fat || 0),
+    fiber: Number(data.fiber || 0)
+  };
+};
+
+$("#chatgptImportForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  try {
+    const form = event.currentTarget;
+
+    const meal = parseHWPFood(
+      $("#chatgptImportText").value
+    );
+
+    HWPStorage.saveMeal({
+      date: form.elements.date.value,
+      slot: meal.slot,
+      description: meal.name,
+      calories: meal.calories,
+      protein: meal.protein,
+      carbs: meal.carbs,
+      fats: meal.fat,
+      fiber: meal.fiber,
+      source: "chatgpt"
     });
-    $("#clearNutriResultButton").addEventListener("click", () => {
-      currentNutriAnalysis = null;
-      $("#nutriAiForm").reset();
-      $("#nutriAiForm").elements.date.value = today();
-      renderNutriResult();
-      renderNutriSuggestions();
-    });
-    $("#addNutriToDiaryButton").addEventListener("click", () => {
-      if (!currentNutriAnalysis) return;
-      if (currentNutriAnalysis.addedMealId) return showToast("Esta analise ja foi adicionada ao diario.");
-      const totals = currentNutriAnalysis.totals;
-      const description = currentNutriAnalysis.inputText || currentNutriAnalysis.foods.map((food) => food.name).join(", ");
-      const mealId = `nutri-${currentNutriAnalysis.id}`;
-      HWPStorage.saveMeal({
-        id: mealId,
-        date: currentNutriAnalysis.date,
-        slot: $("#nutriTargetSlot").value || "lunch",
-        description,
-        calories: totals.calories,
-        protein: totals.protein,
-        carbs: totals.carbs,
-        fats: totals.fat,
-        fiber: totals.fiber,
-        photo: currentNutriAnalysis.photo,
-        source: "nutri-ai",
-        analysisId: currentNutriAnalysis.id,
-        foods: currentNutriAnalysis.foods
-      });
-      HWPStorage.markNutriAnalysisAdded(currentNutriAnalysis.id, mealId);
-      currentNutriAnalysis = null;
-      showToast("Refeicao adicionada ao diario.");
-      refresh();
-      switchView("mealsView");
-    });
-    $("#saveNutriFavoriteButton").addEventListener("click", () => {
-      if (!currentNutriAnalysis) return;
-      const totals = currentNutriAnalysis.totals;
-      HWPStorage.saveFavorite({
-        name: currentNutriAnalysis.inputText || currentNutriAnalysis.foods.map((food) => food.name).join(", "),
-        calories: totals.calories,
-        protein: totals.protein,
-        carbs: totals.carbs,
-        fats: totals.fat,
-        fiber: totals.fiber,
-        foods: currentNutriAnalysis.foods
-      });
-      showToast("Favorita salva.");
-      refresh();
-    });
+
+    showToast("Refeição importada com sucesso.");
+
+    form.reset();
+    form.elements.date.value = today();
+
+    refresh();
+
+    switchView("mealsView");
+
+  } catch (error) {
+    console.error(error);
+    showToast(error.message);
+  }
+});
+
+$("#clearChatGPTImportButton").addEventListener("click", () => {
+
+  $("#chatgptImportForm").reset();
+
+  $("#chatgptImportForm").elements.date.value = today();
+
+});
 
     $("#workoutForm").addEventListener("submit", (event) => {
       event.preventDefault();
@@ -512,12 +440,7 @@
       showToast("Ajustes salvos.");
       refresh();
     });
-    $("#resetDataButton").addEventListener("click", () => {
-      if (!confirm("Resetar todos os dados locais?")) return;
-      HWPStorage.reset();
-      showToast("Dados resetados.");
-      refresh();
-    });
+
   };
 
   const initActions = () => {
@@ -548,9 +471,6 @@
           form.elements.fiber.value = item.fiber;
           switchView("libraryView");
         }
-      } else if (target.dataset.suggestMeal) {
-        $("#nutriAiForm").elements.text.value = target.dataset.suggestMeal;
-        renderNutriSuggestions();
       } else return;
       showToast("Dados atualizados.");
       refresh();
