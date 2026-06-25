@@ -2216,17 +2216,13 @@ if (photoForm) photoForm.elements.date.value = today();
       refresh();
     });
 
-   const clearButton = $("#clearChatGPTImportButton");
+const clearButton = $("#clearChatGPTImportButton");
 
 if (clearButton) {
   clearButton.addEventListener("click", () => {
     $("#chatgptImportForm").reset();
-
   });
 }
-      renderNutriResult();
-      renderNutriSuggestions();
-    });
     $("#addNutriToDiaryButton").addEventListener("click", () => {
       if (!currentNutriAnalysis) return;
       if (currentNutriAnalysis.addedMealId) return showToast("Esta analise ja foi adicionada ao diario.");
