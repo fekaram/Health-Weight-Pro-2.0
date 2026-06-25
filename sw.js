@@ -1,5 +1,5 @@
 const CACHE_NAME = "health-weight-pro-2.1.0";
-```javascript
+
 const APP_SHELL = [
   "./",
   "./index.html",
