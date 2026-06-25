@@ -263,13 +263,10 @@ if (tirzepatideForm) tirzepatideForm.elements.date.value = today();
 const photoForm = $("#photoForm");
 if (photoForm) photoForm.elements.date.value = today();
 
-console.log("PASSOU BLOCO 1");
-
     $$(".tab-button").forEach((button) => button.addEventListener("click", () => switchView(button.dataset.view)));
     $("#fillTodayButton").addEventListener("click", () => fillDailyForm(state.entries.find((entry) => entry.date === today()) || { date: today() }));
     ["water", "protein", "calories", "sleep", "steps"].forEach((name) => $("#dailyForm").elements[name].addEventListener("input", autoCheckGoals));
     $("#dailyForm").elements.date.addEventListener("change", () => fillDailyForm(state.entries.find((entry) => entry.date === $("#dailyForm").elements.date.value) || { date: $("#dailyForm").elements.date.value }));
-    console.log("PASSOU BLOCO 2");
     $("#dailyForm").addEventListener("submit", (event) => {
       event.preventDefault();
       HWPStorage.saveEntry(entryFromForm());
@@ -284,7 +281,6 @@ console.log("PASSOU BLOCO 1");
     });
 
     $("#mealForm").elements.date.addEventListener("change", renderMeals);
-    console.log("PASSOU BLOCO 3");
     $("#mealForm").addEventListener("submit", async (event) => {
       event.preventDefault();
       const form = event.currentTarget;
@@ -319,6 +315,7 @@ console.log("PASSOU BLOCO 1");
       refresh();
     });
 
+```javascript
 // ======================
 // NUTRI IA+
 // ======================
@@ -349,19 +346,18 @@ const parseHWPFood = (text) => {
 };
 
 $("#importChatGPTButton").addEventListener("click", () => {
-  alert("BOTÃO FUNCIONANDO");
-});
 
-    alert("SALVOU A REFEIÇÃO");
-    showToast("Refeição importada com sucesso.");
+  try {
 
-    refresh();
+    const form = $("#chatgptImportForm");
 
-  } catch (error) {
-    console.error(error);
-    alert(error.message);
-  }
-});
+    if (!form) {
+      throw new Error("Formulário não encontrado.");
+    }
+
+    const text = $("#chatgptImportText").value;
+
+    const meal = parseHWPFood(text);
 
     HWPStorage.saveMeal({
       date: form.elements.date.value,
@@ -371,8 +367,7 @@ $("#importChatGPTButton").addEventListener("click", () => {
       protein: meal.protein,
       carbs: meal.carbs,
       fats: meal.fat,
-      fiber: meal.fiber,
-      source: "chatgpt"
+      fiber: meal.fiber
     });
 
     showToast("Refeição importada com sucesso.");
@@ -382,22 +377,23 @@ $("#importChatGPTButton").addEventListener("click", () => {
 
     refresh();
 
-    switchView("mealsView");
-
   } catch (error) {
+
     console.error(error);
-    showToast(error.message);
+    alert(error.message);
+
   }
+
 });
 
 $("#clearChatGPTImportButton").addEventListener("click", () => {
 
-const form = $("#chatgptImportForm");
+  const form = $("#chatgptImportForm");
 
-if (form) {
+  if (!form) return;
+
   form.reset();
   form.elements.date.value = today();
-}
 
 });
 
