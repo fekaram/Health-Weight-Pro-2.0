@@ -503,13 +503,12 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.42); backdrop-filter: blur(4px); 
     </label>
 
     <div class="form-actions full">
-      <button
 <button
   class="primary-button"
   id="importChatGPTButton"
-  type="button">
-        Importar do ChatGPT
-      </button>
+  type="submit">
+  Importar do ChatGPT
+</button>
 
       <button
         class="secondary-button"
@@ -2154,6 +2153,64 @@ if (mealForm) mealForm.elements.date.value = today();
 
 const chatgptForm = $("#chatgptImportForm");
 if (chatgptForm) chatgptForm.elements.date.value = today();
+    
+    const parseHWPFood = (text) => {
+  const lines = text.trim().split("\n");
+
+  if (!lines.length || lines[0].trim() !== "HWP_FOOD") {
+    throw new Error("Código HWP_FOOD inválido.");
+  }
+
+  const data = {};
+
+  lines.slice(1).forEach((line) => {
+    const [key, value] = line.split("=");
+    if (key && value) {
+      data[key.trim()] = value.trim();
+    }
+  });
+
+  return {
+    slot: data.slot || "lunch",
+    name: data.name || "Refeição",
+    calories: Number(data.calories || 0),
+    protein: Number(data.protein || 0),
+    carbs: Number(data.carbs || 0),
+    fats: Number(data.fat || 0),
+    fiber: Number(data.fiber || 0)
+  };
+};
+
+if (chatgptForm) {
+  chatgptForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    try {
+      const meal = parseHWPFood(
+        $("#chatgptImportText").value
+      );
+
+      HWPStorage.saveMeal({
+        date: chatgptForm.elements.date.value,
+        slot: meal.slot,
+        description: meal.name,
+        calories: meal.calories,
+        protein: meal.protein,
+        carbs: meal.carbs,
+        fats: meal.fats,
+        fiber: meal.fiber,
+        source: "chatgpt"
+      });
+
+      showToast("Refeição importada com sucesso.");
+      refresh();
+      switchView("mealsView");
+
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+}
 
 const workoutForm = $("#workoutForm");
 if (workoutForm) workoutForm.elements.date.value = today();
