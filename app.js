@@ -249,7 +249,11 @@ const render = () => {
   const initForms = () => {
     fillDailyForm(state.entries.find((entry) => entry.date === today()) || { date: today() });
     $("#mealForm").elements.date.value = today();
-   $("#chatgptImportForm").elements.date.value = today();
+const chatgptForm = $("#chatgptImportForm");
+
+if (chatgptForm) {
+  chatgptForm.elements.date.value = today();
+}
     $("#workoutForm").elements.date.value = today();
     $("#tirzepatideForm").elements.date.value = today();
     $("#photoForm").elements.date.value = today();
@@ -374,9 +378,12 @@ $("#chatgptImportForm").addEventListener("submit", (event) => {
 
 $("#clearChatGPTImportButton").addEventListener("click", () => {
 
-  $("#chatgptImportForm").reset();
+const form = $("#chatgptImportForm");
 
-  $("#chatgptImportForm").elements.date.value = today();
+if (form) {
+  form.reset();
+  form.elements.date.value = today();
+}
 
 });
 
