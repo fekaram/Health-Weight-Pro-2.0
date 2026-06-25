@@ -2150,7 +2150,10 @@ ${text || "Sem descricao textual. Use a imagem como fonte principal."}
   const initForms = () => {
     fillDailyForm(state.entries.find((entry) => entry.date === today()) || { date: today() });
     $("#mealForm").elements.date.value = today();
-    $("#nutriAiForm").elements.date.value = today();
+const chatgptForm = $("#chatgptImportForm");
+if (chatgptForm) {
+  chatgptForm.elements.date.value = today();
+}
     $("#workoutForm").elements.date.value = today();
     $("#tirzepatideForm").elements.date.value = today();
     $("#photoForm").elements.date.value = today();
