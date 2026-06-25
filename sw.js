@@ -1,16 +1,16 @@
-const CACHE_NAME = "health-weight-pro-1.1.3";
+const CACHE_NAME = "health-weight-pro-2.1.0";
+```javascript
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.json",
-  "./css/styles.css",
-  "./js/storage.js",
-  "./js/nutri-ai.js",
-  "./js/charts.js",
-  "./js/export.js",
-  "./js/settings.js",
-  "./js/pwa.js",
-  "./js/app.js",
+  "./styles.css",
+  "./storage.js",
+  "./charts.js",
+  "./export.js",
+  "./settings.js",
+  "./app.js",
+  "./sw.js",
   "./assets/icons/icon.svg",
   "./assets/icons/icon.png",
   "./assets/icons/icon-180.png",
