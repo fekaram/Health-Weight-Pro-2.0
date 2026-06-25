@@ -1,3 +1,4 @@
+console.log("APP.JS VERSAO TESTE 12345");
 (function () {
   "use strict";
 
