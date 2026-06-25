@@ -345,9 +345,37 @@ $("#chatgptImportForm").addEventListener("submit", (event) => {
   try {
     const form = event.currentTarget;
 
-    const meal = parseHWPFood(
-      $("#chatgptImportText").value
-    );
+    const textArea = $("#chatgptImportText");
+
+    if (!textArea) {
+      throw new Error("Campo chatgptImportText não encontrado.");
+    }
+
+    const meal = parseHWPFood(textArea.value);
+
+    console.log("Refeição importada:", meal);
+
+    HWPStorage.saveMeal({
+      date: form.elements.date.value,
+      slot: meal.slot,
+      description: meal.name,
+      calories: meal.calories,
+      protein: meal.protein,
+      carbs: meal.carbs,
+      fats: meal.fat,
+      fiber: meal.fiber,
+      source: "chatgpt"
+    });
+
+    showToast("Refeição importada com sucesso.");
+
+    refresh();
+
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+});
 
     HWPStorage.saveMeal({
       date: form.elements.date.value,
