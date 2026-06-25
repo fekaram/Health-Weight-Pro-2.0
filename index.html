@@ -2280,34 +2280,15 @@ if (clearButton) {
     $("#chatgptImportForm").reset();
   });
 }
-    $("#addNutriToDiaryButton").addEventListener("click", () => {
-      if (!currentNutriAnalysis) return;
-      if (currentNutriAnalysis.addedMealId) return showToast("Esta analise ja foi adicionada ao diario.");
-      const totals = currentNutriAnalysis.totals;
-      const description = currentNutriAnalysis.inputText || currentNutriAnalysis.foods.map((food) => food.name).join(", ");
-      const mealId = `nutri-${currentNutriAnalysis.id}`;
-      HWPStorage.saveMeal({
-        id: mealId,
-        date: currentNutriAnalysis.date,
-        slot: $("#nutriTargetSlot").value || "lunch",
-        description,
-        calories: totals.calories,
-        protein: totals.protein,
-        carbs: totals.carbs,
-        fats: totals.fat,
-        fiber: totals.fiber,
-        photo: currentNutriAnalysis.photo,
-        source: "nutri-ai",
-        analysisId: currentNutriAnalysis.id,
-        foods: currentNutriAnalysis.foods
-      });
+   
       HWPStorage.markNutriAnalysisAdded(currentNutriAnalysis.id, mealId);
       currentNutriAnalysis = null;
       showToast("Refeicao adicionada ao diario.");
       refresh();
       switchView("mealsView");
     });
-    $("#saveNutriFavoriteButton").addEventListener("click", () => {
+  /*
+   $("#addNutriToDiaryButton").addEventListener("click", () => {
       if (!currentNutriAnalysis) return;
       const totals = currentNutriAnalysis.totals;
       HWPStorage.saveFavorite({
@@ -2322,6 +2303,7 @@ if (clearButton) {
       showToast("Favorita salva.");
       refresh();
     });
+*/
 
     $("#workoutForm").addEventListener("submit", (event) => {
       event.preventDefault();
