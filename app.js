@@ -339,35 +339,9 @@ const parseHWPFood = (text) => {
   };
 };
 
-$("#chatgptImportForm").addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  try {
-    const form = event.currentTarget;
-
-    const textArea = $("#chatgptImportText");
-
-    if (!textArea) {
-      throw new Error("Campo chatgptImportText não encontrado.");
-    }
-
-    const meal = parseHWPFood(textArea.value);
-
-    console.log("Refeição importada:", meal);
-alert("PASSOU NO PARSER");
-console.log(meal);
-    
-    HWPStorage.saveMeal({
-      date: form.elements.date.value,
-      slot: meal.slot,
-      description: meal.name,
-      calories: meal.calories,
-      protein: meal.protein,
-      carbs: meal.carbs,
-      fats: meal.fat,
-      fiber: meal.fiber,
-      source: "chatgpt"
-    });
+$("#importChatGPTButton").addEventListener("click", () => {
+  alert("BOTÃO FUNCIONANDO");
+});
 
     alert("SALVOU A REFEIÇÃO");
     showToast("Refeição importada com sucesso.");
