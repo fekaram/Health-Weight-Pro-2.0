@@ -354,7 +354,9 @@ $("#chatgptImportForm").addEventListener("submit", (event) => {
     const meal = parseHWPFood(textArea.value);
 
     console.log("Refeição importada:", meal);
-
+alert("PASSOU NO PARSER");
+console.log(meal);
+    
     HWPStorage.saveMeal({
       date: form.elements.date.value,
       slot: meal.slot,
@@ -367,6 +369,7 @@ $("#chatgptImportForm").addEventListener("submit", (event) => {
       source: "chatgpt"
     });
 
+    alert("SALVOU A REFEIÇÃO");
     showToast("Refeição importada com sucesso.");
 
     refresh();
