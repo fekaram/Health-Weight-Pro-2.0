@@ -2251,7 +2251,10 @@ if (chatgptForm) {
     $("#clearNutriResultButton").addEventListener("click", () => {
       currentNutriAnalysis = null;
       $("#nutriAiForm").reset();
-      $("#nutriAiForm").elements.date.value = today();
+const chatgptForm = $("#chatgptImportForm");
+if (chatgptForm) {
+  chatgptForm.elements.date.value = today();
+}
       renderNutriResult();
       renderNutriSuggestions();
     });
