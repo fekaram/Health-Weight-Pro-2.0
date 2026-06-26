@@ -2239,8 +2239,8 @@ if (chatgptForm) {
 
 meal.score = calculateMealScore(meal);
 
-console.log("SCORE CALCULADO:", meal.score);
-
+alert("SCORE = " + meal.score);
+      
 HWPStorage.saveMeal({
   date: chatgptForm.elements.date.value,
   slot: meal.slot,
