@@ -472,7 +472,6 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.42); backdrop-filter: blur(4px); 
       <input name="date" type="date" required>
     </label>
 
-```
 <label>
   Refeicao
   <select name="slot" required></select>
@@ -504,7 +503,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.42); backdrop-filter: blur(4px); 
     Salvar favorita
   </button>
 </div>
-```
+
 
   </form>
 
@@ -2001,47 +2000,48 @@ $("#metricsGrid").innerHTML = [
     const form = $("#dailyForm");
     const data = entry || { date: today() };
     form.elements.date.value = data.date || today();
-    ["weight", "waist", "protein", "calories", "steps", "water", "sleep", "notes"].forEach((name) => {
-      form.elements[name].value = data[name] || "";
-    });
-    ["waterDone", "proteinDone", "caloriesDone", "strengthDone", "cardioDone", "sleepDone", "stepsDone", "applicationDone"].forEach((name) => {
-      form.elements[name].checked = Boolean(data[name]);
-    });
+    
+ ["weight", "waist", "sleep"].forEach((name) => {
+  form.elements[name].value = data[name] || "";
+});
+
+["waterDone", "strengthDone", "cardioDone", "sleepDone", "applicationDone"].forEach((name) => {
+  form.elements[name].checked = Boolean(data[name]);
+});
     autoCheckGoals();
   };
 
   const autoCheckGoals = () => {
-    const form = $("#dailyForm");
-    if (HWPStorage.toNumber(form.elements.water.value) >= state.profile.dailyWaterMin) form.elements.waterDone.checked = true;
-    if (HWPStorage.toNumber(form.elements.protein.value) >= state.profile.dailyProtein) form.elements.proteinDone.checked = true;
-    const calories = HWPStorage.toNumber(form.elements.calories.value);
-    if (calories > 0 && calories <= state.profile.dailyCalories) form.elements.caloriesDone.checked = true;
-    if (HWPStorage.toNumber(form.elements.sleep.value) >= state.profile.dailySleep) form.elements.sleepDone.checked = true;
-    if (HWPStorage.toNumber(form.elements.steps.value) >= state.profile.dailySteps) form.elements.stepsDone.checked = true;
-  };
+  const form = $("#dailyForm");
+
+  if (
+    HWPStorage.toNumber(form.elements.sleep.value) >=
+    state.profile.dailySleep
+  ) {
+    form.elements.sleepDone.checked = true;
+  }
+};
 
   const entryFromForm = () => {
-    const form = $("#dailyForm");
-    return {
-      date: form.elements.date.value,
-      weight: form.elements.weight.value,
-      waist: form.elements.waist.value,
-      water: form.elements.water.value,
-      protein: form.elements.protein.value,
-      calories: form.elements.calories.value,
-      steps: form.elements.steps.value,
-      sleep: form.elements.sleep.value,
-      notes: form.elements.notes.value,
-      waterDone: form.elements.waterDone.checked,
-      proteinDone: form.elements.proteinDone.checked,
-      caloriesDone: form.elements.caloriesDone.checked,
-      strengthDone: form.elements.strengthDone.checked,
-      cardioDone: form.elements.cardioDone.checked,
-      sleepDone: form.elements.sleepDone.checked,
-      stepsDone: form.elements.stepsDone.checked,
-      applicationDone: form.elements.applicationDone.checked
-    };
-  };
+const form = $("#dailyForm");
+
+return {
+date: form.elements.date.value,
+weight: form.elements.weight.value,
+waist: form.elements.waist.value,
+sleep: form.elements.sleep.value,
+
+
+waterDone: form.elements.waterDone.checked,
+strengthDone: form.elements.strengthDone.checked,
+cardioDone: form.elements.cardioDone.checked,
+sleepDone: form.elements.sleepDone.checked,
+applicationDone: form.elements.applicationDone.checked
+
+
+};
+};
+
 
   const renderDailyHistory = () => {
     $("#dailyHistory").innerHTML = state.entries.length
