@@ -2539,11 +2539,24 @@ const meal = {
   foods: item.foods
 };
 
-console.log("ANTES", meal);
+let score = 0;
 
-meal.score = calculateMealScore(meal);
+score += Math.min(4, Number(meal.protein || 0) / 10);
+score += Math.min(2, Number(meal.fiber || 0) / 5);
 
-console.log("DEPOIS", meal);
+if (meal.calories >= 250 && meal.calories <= 700) {
+  score += 2;
+} else if (meal.calories <= 900) {
+  score += 1;
+}
+
+if (meal.fats <= 20) {
+  score += 2;
+} else if (meal.fats <= 35) {
+  score += 1;
+}
+
+meal.score = Math.min(10, Number(score.toFixed(1)));
           
 HWPStorage.saveMeal(meal);
           
