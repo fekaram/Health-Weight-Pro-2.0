@@ -63,6 +63,8 @@ const calculateDailyFoodScore = () => {
 
   return Number((total / todayMeals.length).toFixed(1));
 };
+
+  console.log("DAILY FOOD SCORE LOADED");
   
   const renderMetrics = () => {
     $("#scorePill").className = scoreClass(metrics.adherence);
