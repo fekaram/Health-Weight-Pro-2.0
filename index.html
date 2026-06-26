@@ -1895,10 +1895,24 @@ ${text || "Sem descricao textual. Use a imagem como fonte principal."}
       ${progress === null ? "" : `<div class="progress-track"><div class="progress-bar" style="width:${Math.max(0, Math.min(100, progress))}%"></div></div>`}
     </article>`;
 
+  const calculateDailyFoodScore = () => {
+  const todayMeals = HWPStorage.mealsForDate(state, today());
+
+  if (!todayMeals.length) return 0;
+
+  const total = todayMeals.reduce(
+    (sum, meal) => sum + Number(meal.score || 0),
+    0
+  );
+
+  return Number((total / todayMeals.length).toFixed(1));
+};
+  
   const renderMetrics = () => {
     $("#scorePill").className = scoreClass(metrics.adherence);
     $("#scorePill").textContent = `${Math.round(metrics.adherence)}%`;
     const estimated = metrics.estimatedDate ? metrics.estimatedDate.toLocaleDateString("pt-BR") : "Registre mais dias";
+    const dailyFoodScore = calculateDailyFoodScore();
     $("#metricsGrid").innerHTML = [
       metricCard({ label: "Peso atual", value: `${fmt(metrics.currentWeight, " kg")}`, sub: `Inicial ${fmt(metrics.profile.initialWeight, " kg")} | Perdido ${fmt(metrics.lost, " kg")} | Restante ${fmt(metrics.remaining, " kg")}`, wide: true }),
       metricCard({ label: "Meta", value: `${Math.round(metrics.percent)}%`, sub: `Rumo a ${fmt(metrics.profile.targetWeight, " kg")}`, wide: true, progress: metrics.percent }),
@@ -1907,8 +1921,15 @@ ${text || "Sem descricao textual. Use a imagem como fonte principal."}
       metricCard({ label: "Data estimada", value: estimated, sub: `Meta de ${fmt(metrics.profile.targetWeight, " kg")}` }),
       metricCard({ label: "Circunferencia abdominal", value: `${fmt(metrics.currentWaist, " cm")}`, sub: `Reducao acumulada ${fmt(metrics.waistReduction, " cm")}` }),
       metricCard({ label: "Score semanal", value: `${Math.round(metrics.weeklyAdherence)}%`, sub: "Media dos ultimos 7 registros" }),
-      metricCard({ label: "Score mensal", value: `${Math.round(metrics.monthlyAdherence)}%`, sub: "Media dos ultimos 30 registros" }),
-      metricCard({ label: "Calorias do dia", value: `${int(metrics.dayNutrition.calories)} kcal`, sub: `Meta ${int(metrics.profile.dailyCalories)} kcal` }),
+metricCard({ label: "Score mensal", value: `${Math.round(metrics.monthlyAdherence)}%`, sub: "Media dos ultimos 30 registros" }),
+
+metricCard({
+  label: "Score alimentar",
+  value: `${dailyFoodScore}/10`,
+  sub: "Media das refeicoes de hoje"
+}),
+
+metricCard({ label: "Calorias do dia", value: `${int(metrics.dayNutrition.calories)} kcal`, sub: `Meta ${int(metrics.profile.dailyCalories)} kcal` }),
       metricCard({ label: "Proteina do dia", value: `${int(metrics.dayNutrition.protein)} g`, sub: `Meta ${int(metrics.profile.dailyProtein)} g` }),
       metricCard({ label: "Carboidratos do dia", value: `${int(metrics.dayNutrition.carbs)} g`, sub: `Meta ${int(metrics.profile.dailyCarbs)} g` }),
       metricCard({ label: "Gorduras do dia", value: `${int(metrics.dayNutrition.fats)} g`, sub: `Meta ${int(metrics.profile.dailyFats)} g` }),
