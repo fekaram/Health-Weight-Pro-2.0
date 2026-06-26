@@ -2233,13 +2233,15 @@ if (chatgptForm) {
     event.preventDefault();
 
     try {
-      const meal = parseHWPFood(
-        $("#chatgptImportText").value
-      );
+ const meal = parseHWPFood(
+  $("#chatgptImportText").value
+);
 
 meal.score = calculateMealScore(meal);
-      
-     HWPStorage.saveMeal({
+
+console.log("SCORE CALCULADO:", meal.score);
+
+HWPStorage.saveMeal({
   date: chatgptForm.elements.date.value,
   slot: meal.slot,
   description: meal.name,
