@@ -2539,8 +2539,12 @@ const meal = {
   foods: item.foods
 };
 
+console.log("ANTES", meal);
+
 meal.score = calculateMealScore(meal);
 
+console.log("DEPOIS", meal);
+          
 HWPStorage.saveMeal(meal);
           
           switchView("mealsView");
