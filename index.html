@@ -2026,7 +2026,16 @@ ${text || "Sem descricao textual. Use a imagem como fonte principal."}
   ${int(meal.fiber)} g fibras
 </p>
 
-<p><strong>⭐ Nota: ${meal.score || 0}/10</strong></p>
+<p>
+  <strong class="${
+    meal.score >= 9 ? "score-green" :
+    meal.score >= 7 ? "score-blue" :
+    meal.score >= 5 ? "score-yellow" :
+    "score-red"
+  }">
+    ⭐ Nota: ${meal.score || 0}/10
+  </strong>
+</p>
 
 <footer>
   <span>${slot.label}</span>
