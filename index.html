@@ -2165,17 +2165,47 @@ applicationDone: form.elements.applicationDone.checked
   };
 
   const renderFavorites = () => {
-    $("#favoriteList").innerHTML = state.favorites.map((item) => `
+  $("#favoriteList").innerHTML = state.favorites.map((item) => {
+
+    const score =
+      Math.min(4, Number(item.protein || 0) / 10) +
+      Math.min(2, Number(item.fiber || 0) / 5) +
+      ((item.calories >= 250 && item.calories <= 700) ? 2 : (item.calories <= 900 ? 1 : 0)) +
+      ((item.fats <= 20) ? 2 : (item.fats <= 35 ? 1 : 0));
+
+    const finalScore = Math.min(10, score).toFixed(1);
+
+    return `
       <article class="favorite-card">
         <h3>${escapeHtml(item.name)}</h3>
-        <p>${int(item.calories)} kcal | ${int(item.protein)} g P | ${int(item.carbs)} g C | ${int(item.fats)} g G | ${int(item.fiber)} g fibras</p>
+
+        <p>⭐ ${finalScore}/10</p>
+
+        <p>
+          ${int(item.calories)} kcal |
+          ${int(item.protein)} g P |
+          ${int(item.carbs)} g C |
+          ${int(item.fats)} g G |
+          ${int(item.fiber)} g fibras
+        </p>
+
         <footer>
-          <button class="secondary-button" type="button" data-add-favorite="${item.id}">Adicionar novamente</button>
-          <button class="secondary-button" type="button" data-edit-favorite="${item.id}">Editar</button>
-          <button class="danger-button" type="button" data-delete-favorite="${item.id}">Excluir</button>
+          <button class="secondary-button" type="button" data-add-favorite="${item.id}">
+            Adicionar novamente
+          </button>
+
+          <button class="secondary-button" type="button" data-edit-favorite="${item.id}">
+            Editar
+          </button>
+
+          <button class="danger-button" type="button" data-delete-favorite="${item.id}">
+            Excluir
+          </button>
         </footer>
-      </article>`).join("");
-  };
+      </article>
+    `;
+  }).join("");
+};
 
   const renderNutriSlots = () => {
     const select = $("#nutriTargetSlot");
