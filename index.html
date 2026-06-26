@@ -2171,17 +2171,48 @@ if (chatgptForm) chatgptForm.elements.date.value = today();
     }
   });
 
-  return {
-    slot: data.slot || "lunch",
-    name: data.name || "Refeição",
-    calories: Number(data.calories || 0),
-    protein: Number(data.protein || 0),
-    carbs: Number(data.carbs || 0),
-    fats: Number(data.fat || 0),
-    fiber: Number(data.fiber || 0)
-  };
+ return {
+  slot: data.slot || "lunch",
+  name: data.name || "Refeição",
+  calories: Number(data.calories || 0),
+  protein: Number(data.protein || 0),
+  carbs: Number(data.carbs || 0),
+  fats: Number(data.fat || 0),
+  fiber: Number(data.fiber || 0),
+  score: Number(data.score || 0)
 };
+};
+    
+const calculateMealScore = (meal) => {
+  let score = 0;
 
+  // Proteína (0–4)
+  score += Math.min(4, Number(meal.protein || 0) / 10);
+
+  // Fibras (0–2)
+  score += Math.min(2, Number(meal.fiber || 0) / 5);
+
+  // Calorias (0–2)
+  const calories = Number(meal.calories || 0);
+
+  if (calories >= 250 && calories <= 700) {
+    score += 2;
+  } else if (calories <= 900) {
+    score += 1;
+  }
+
+  // Gorduras (0–2)
+  const fats = Number(meal.fats || 0);
+
+  if (fats <= 20) {
+    score += 2;
+  } else if (fats <= 35) {
+    score += 1;
+  }
+
+  return Math.min(10, Number(score.toFixed(1)));
+};
+    
 if (chatgptForm) {
   chatgptForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -2191,17 +2222,20 @@ if (chatgptForm) {
         $("#chatgptImportText").value
       );
 
-      HWPStorage.saveMeal({
-        date: chatgptForm.elements.date.value,
-        slot: meal.slot,
-        description: meal.name,
-        calories: meal.calories,
-        protein: meal.protein,
-        carbs: meal.carbs,
-        fats: meal.fats,
-        fiber: meal.fiber,
-        source: "chatgpt"
-      });
+meal.score = calculateMealScore(meal);
+      
+     HWPStorage.saveMeal({
+  date: chatgptForm.elements.date.value,
+  slot: meal.slot,
+  description: meal.name,
+  calories: meal.calories,
+  protein: meal.protein,
+  carbs: meal.carbs,
+  fats: meal.fats,
+  fiber: meal.fiber,
+  score: meal.score,
+  source: "chatgpt"
+});
 
       showToast("Refeição importada com sucesso.");
       refresh();
