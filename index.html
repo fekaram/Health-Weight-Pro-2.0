@@ -407,32 +407,73 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.42); backdrop-filter: blur(4px); 
             </div>
             <button class="secondary-button" id="fillTodayButton" type="button">Hoje</button>
           </div>
-          <form class="form-grid" id="dailyForm">
-            <label>Data<input name="date" type="date" required></label>
-            <label>Peso (kg)<input name="weight" type="number" min="40" max="200" step="0.1"></label>
-            <label>Cintura (cm)<input name="waist" type="number" min="40" max="180" step="0.1"></label>
-            <label>Agua (L)<input name="water" type="number" min="0" max="8" step="0.1"></label>
-            <label>Proteina (g)<input name="protein" type="number" min="0" max="350" step="1"></label>
-            <label>Calorias<input name="calories" type="number" min="0" max="6000" step="1"></label>
-            <label>Passos<input name="steps" type="number" min="0" max="60000" step="1"></label>
-            <label>Sono (h)<input name="sleep" type="number" min="0" max="16" step="0.1"></label>
-            <label class="full">Observacoes<textarea name="notes" rows="3"></textarea></label>
-            <fieldset class="check-grid full">
-              <legend>Checklist</legend>
-              <label><input name="waterDone" type="checkbox"> Agua</label>
-              <label><input name="proteinDone" type="checkbox"> Proteina</label>
-              <label><input name="caloriesDone" type="checkbox"> Calorias</label>
-              <label><input name="strengthDone" type="checkbox"> Musculacao</label>
-              <label><input name="cardioDone" type="checkbox"> Cardio</label>
-              <label><input name="sleepDone" type="checkbox"> Sono</label>
-              <label><input name="stepsDone" type="checkbox"> Passos</label>
-              <label><input name="applicationDone" type="checkbox"> Aplicacao</label>
-            </fieldset>
-            <div class="form-actions full">
-              <button class="primary-button" type="submit">Salvar check-in</button>
-              <button class="danger-button" id="deleteEntryButton" type="button">Excluir dia</button>
-            </div>
-          </form>
+          
+         <form class="form-grid" id="dailyForm">
+  <label>
+    Data
+    <input name="date" type="date" required>
+  </label>
+
+  <label>
+    Peso (kg)
+    <input name="weight" type="number" min="40" max="200" step="0.1">
+  </label>
+
+  <label>
+    Cintura (cm)
+    <input name="waist" type="number" min="40" max="180" step="0.1">
+  </label>
+
+  <label>
+    Sono (h)
+    <input name="sleep" type="number" min="0" max="16" step="0.1">
+  </label>
+
+  <fieldset class="check-grid full">
+    <legend>Checklist</legend>
+
+<label>
+  <input name="waterDone" type="checkbox">
+  Agua
+</label>
+
+<label>
+  <input name="sleepDone" type="checkbox">
+  Sono
+</label>
+
+<label>
+  <input name="strengthDone" type="checkbox">
+  Musculacao
+</label>
+
+<label>
+  <input name="cardioDone" type="checkbox">
+  Cardio
+</label>
+
+<label>
+  <input name="applicationDone" type="checkbox">
+  Aplicacao
+</label>
+
+  </fieldset>
+
+  <div class="form-actions full">
+    <button class="primary-button" type="submit">
+      Salvar check-in
+    </button>
+
+<button
+  class="danger-button"
+  id="deleteEntryButton"
+  type="button">
+  Excluir dia
+</button>
+
+  </div>
+</form>
+
           <section class="history-panel">
             <h3>Historico recente</h3>
             <div class="table-scroll">
