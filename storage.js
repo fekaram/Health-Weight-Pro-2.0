@@ -166,6 +166,7 @@
       carbs: toNumber(meal.carbs),
       fats: toNumber(meal.fats),
       fiber: toNumber(meal.fiber),
+      score: toNumber(meal.score),
       photo: meal.photo || "",
       source: String(meal.source || "manual"),
       analysisId: meal.analysisId || "",
