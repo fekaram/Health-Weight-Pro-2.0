@@ -80,7 +80,11 @@ const calculateDailyFoodScore = () => {
       metricCard({ label: "Circunferencia abdominal", value: `${fmt(metrics.currentWaist, " cm")}`, sub: `Reducao acumulada ${fmt(metrics.waistReduction, " cm")}` }),
       metricCard({ label: "Score semanal", value: `${Math.round(metrics.weeklyAdherence)}%`, sub: "Media dos ultimos 7 registros" }),
       metricCard({ label: "Score mensal", value: `${Math.round(metrics.monthlyAdherence)}%`, sub: "Media dos ultimos 30 registros" }),
-      metricCard({ label: "Score alimentar, value: `${dailyFoodScore}/10`, sub: "Media das refeicoes de hoje" }),
+metricCard({
+  label: "Score alimentar",
+  value: `${dailyFoodScore}/10`,
+  sub: "Media das refeicoes de hoje"
+}),
       metricCard({ label: "Calorias do dia", value: `${int(metrics.dayNutrition.calories)} kcal`, sub: `Meta ${int(metrics.profile.dailyCalories)} kcal` }),
       metricCard({ label: "Proteina do dia", value: `${int(metrics.dayNutrition.protein)} g`, sub: `Meta ${int(metrics.profile.dailyProtein)} g` }),
       metricCard({ label: "Carboidratos do dia", value: `${int(metrics.dayNutrition.carbs)} g`, sub: `Meta ${int(metrics.profile.dailyCarbs)} g` }),
