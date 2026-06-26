@@ -2403,17 +2403,12 @@ if (photoForm) photoForm.elements.date.value = today();
     $("#mealForm").addEventListener("submit", async (event) => {
       event.preventDefault();
       const form = event.currentTarget;
-      HWPStorage.saveMeal({
-        date: form.elements.date.value,
-        slot: form.elements.slot.value,
-        description: form.elements.description.value,
-        calories: form.elements.calories.value,
-        protein: form.elements.protein.value,
-        carbs: form.elements.carbs.value,
-        fats: form.elements.fats.value,
-        fiber: form.elements.fiber.value,
-        photo: await readFileAsDataUrl(form.elements.photo.files[0])
-      });
+   HWPStorage.saveMeal({
+  date: form.elements.date.value,
+  slot: form.elements.slot.value,
+  description: form.elements.description.value,
+  photo: await readFileAsDataUrl(form.elements.photo.files[0])
+});
       form.reset();
       form.elements.date.value = today();
       showToast("Refeicao salva.");
@@ -2422,14 +2417,9 @@ if (photoForm) photoForm.elements.date.value = today();
     $("#saveFavoriteFromMealButton").addEventListener("click", () => {
       const form = $("#mealForm");
       if (!form.elements.description.value.trim()) return showToast("Informe a descricao da refeicao.");
-      HWPStorage.saveFavorite({
-        name: form.elements.description.value,
-        calories: form.elements.calories.value,
-        protein: form.elements.protein.value,
-        carbs: form.elements.carbs.value,
-        fats: form.elements.fats.value,
-        fiber: form.elements.fiber.value
-      });
+     HWPStorage.saveFavorite({
+  name: form.elements.description.value
+});
       showToast("Favorita salva.");
       refresh();
     });
