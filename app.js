@@ -173,8 +173,21 @@ console.log("APP.JS VERSAO TESTE 12345");
         <article class="meal-card">
           ${meal.photo ? `<img src="${meal.photo}" alt="Foto da refeicao">` : ""}
           <strong>${escapeHtml(meal.description)}</strong>
-          <p>${int(meal.calories)} kcal | ${int(meal.protein)} g P | ${int(meal.carbs)} g C | ${int(meal.fats)} g G | ${int(meal.fiber)} g fibras</p>
-          <footer><span>${slot.label}</span><button class="danger-button" type="button" data-delete-meal="${meal.id}">Excluir</button></footer>
+
+<p>${int(meal.calories)} kcal | ${int(meal.protein)} g P | ${int(meal.carbs)} g C | ${int(meal.fats)} g G | ${int(meal.fiber)} g fibras</p>
+
+<p>
+  <strong class="${
+    meal.score >= 9 ? "score-green" :
+    meal.score >= 7 ? "score-blue" :
+    meal.score >= 5 ? "score-yellow" :
+    "score-red"
+  }">
+    ⭐ Nota: ${meal.score || 0}/10
+  </strong>
+</p>
+
+<footer><span>${slot.label}</span><button class="danger-button" type="button" data-delete-meal="${meal.id}">Excluir</button></footer>
         </article>`).join("") : `<article class="meal-card"><strong>${slot.label}</strong><p>Nenhuma refeicao registrada.</p></article>`;
       return body;
     }).join("");
