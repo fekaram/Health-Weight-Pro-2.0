@@ -2413,11 +2413,20 @@ if (photoForm) photoForm.elements.date.value = today();
     $("#fillTodayButton").addEventListener("click", () => fillDailyForm(state.entries.find((entry) => entry.date === today()) || { date: today() }));
     ["water", "protein", "calories", "sleep", "steps"].forEach((name) => $("#dailyForm").elements[name].addEventListener("input", autoCheckGoals));
     $("#dailyForm").elements.date.addEventListener("change", () => fillDailyForm(state.entries.find((entry) => entry.date === $("#dailyForm").elements.date.value) || { date: $("#dailyForm").elements.date.value }));
-    $("#dailyForm").addEventListener("submit", (event) => {
-      event.preventDefault();
-      HWPStorage.saveEntry(entryFromForm());
-      showToast("Check-in salvo.");
-      refresh();
+   $("#dailyForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const data = entryFromForm();
+
+  console.log("ENTRY FROM FORM:", data);
+
+  HWPStorage.saveEntry(data);
+
+  console.log("ENTRY SALVA:", HWPStorage.read().entries.slice(-1)[0]);
+
+  showToast("Check-in salvo.");
+  refresh();
+});
     });
     $("#deleteEntryButton").addEventListener("click", () => {
       HWPStorage.deleteEntry($("#dailyForm").elements.date.value);
